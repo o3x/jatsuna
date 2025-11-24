@@ -140,6 +140,7 @@ export const useGameLogic = (difficulty, soundEnabled, playerTurnPosition, gameS
         finalRanking,
         handleCellClick,
         resetGame,
-        initAudioContext
+        initAudioContext,
+        playOrchestraSound
     };
 };

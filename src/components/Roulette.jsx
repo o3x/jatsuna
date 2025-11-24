@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const Roulette = ({ onComplete }) => {
+const Roulette = ({ onComplete, playOrchestraSound }) => {
     const [rouletteResult, setRouletteResult] = useState(null);
 
     useEffect(() => {
@@ -10,6 +10,11 @@ const Roulette = ({ onComplete }) => {
         const spin = () => {
             setRouletteResult(prev => (prev === null ? 0 : (prev + 1) % 3));
             count++;
+
+            // ルーレット音を鳴らす
+            if (playOrchestraSound) {
+                playOrchestraSound('roulette');
+            }
 
             if (count >= 10) {
                 const finalResult = Math.floor(Math.random() * 3);
@@ -27,7 +32,7 @@ const Roulette = ({ onComplete }) => {
         timeoutId = setTimeout(spin, 100);
 
         return () => clearTimeout(timeoutId);
-    }, [onComplete]);
+    }, [onComplete, playOrchestraSound]);
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">

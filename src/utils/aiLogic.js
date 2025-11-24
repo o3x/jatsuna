@@ -214,8 +214,8 @@ export const getAIMoveLogic = (currentBoard, color, difficulty, playerTurnPositi
         const isCorner = (move.row === 0 || move.row === BOARD_SIZE - 1) && (move.col === 0 || move.col === BOARD_SIZE - 1);
         if (isCorner) score += 5;
 
-        // 少しランダム性を入れて、同じスコアならバラけさせる
-        score += Math.random() * 0.5;
+        // ランダム性を大幅に増やして弱くする（0.5 → 2.0）
+        score += Math.random() * 2.0;
 
         if (score > bestScore) {
             bestScore = score;
