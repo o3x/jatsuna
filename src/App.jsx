@@ -85,40 +85,15 @@ function App() {
                             scores={scores}
                             currentPlayer={currentPlayer}
                             playerTurnPosition={playerTurnPosition}
-                            aiThinking={aiThinking}
-                            thinkingDots={aiThinking ? "..." : ""}
-                            showIcons={showIcons}
                             onReset={() => setGameStarted(false)}
+                            playOrchestraSound={playOrchestraSound}
                         />
-
-                        <div className={`text-center py-2 rounded-lg mb-3 bg-slate-700 transition-opacity duration-200 ${aiThinking ? 'opacity-100' : 'opacity-0'}`}>
-                            <div className="text-lg font-bold text-yellow-400 thinking-animation">
-                                {aiThinking ? "🤔 思考中..." : "\u00A0"}
-                            </div>
-                        </div>
-
-                        <Board
-                            board={board}
-                            validMoves={validMoves}
-                            lastMove={lastMove}
-                            animatingCells={animatingCells}
-                            showIcons={showIcons}
-                            onCellClick={handleCellClick}
-                        />
-
-                        {gameOver && finalRanking && (
-                            <div ref={rankingRef}>
-                                <Ranking
-                                    ranking={finalRanking}
-                                    onReset={() => setGameStarted(false)}
-                                    playOrchestraSound={playOrchestraSound}
-                                />
-                            </div>
+                    </div>
                         )}
-                    </>
+            </>
                 )}
-            </div>
         </div>
+        </div >
     );
 }
 

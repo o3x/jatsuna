@@ -2,9 +2,9 @@ import React from 'react';
 import Cell from './Cell';
 import { BOARD_SIZE } from '../utils/constants';
 
-const Board = ({ board, validMoves, lastMove, animatingCells, showIcons, onCellClick }) => {
+const Board = ({ board, validMoves, lastMove, animatingCells, showIcons, onCellClick, isPlayerTurn }) => {
     return (
-        <div className="bg-slate-700 rounded-lg p-4 shadow-2xl">
+        <div className={`bg-slate-700 rounded-lg p-4 shadow-2xl transition-opacity duration-300 ${!isPlayerTurn ? 'opacity-50 pointer-events-none' : ''}`}>
             <div className="grid gap-1" style={{
                 gridTemplateColumns: `repeat(${BOARD_SIZE}, minmax(0, 1fr))`,
                 aspectRatio: '1/1'
