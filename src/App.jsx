@@ -105,7 +105,11 @@ function App() {
 
                         {gameOver && finalRanking && (
                             <div ref={rankingRef}>
-                                <Ranking ranking={finalRanking} onReset={() => setGameStarted(false)} />
+                                <Ranking
+                                    ranking={finalRanking}
+                                    onReset={() => setGameStarted(false)}
+                                    playOrchestraSound={playOrchestraSound}
+                                />
                             </div>
                         )}
                     </>
