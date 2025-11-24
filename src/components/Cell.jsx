@@ -4,9 +4,21 @@ import { PLAYER_SHAPES, PLAYER_NAMES } from '../utils/constants';
 const Cell = ({ row, col, value, isValidMove, isLastMove, isAnimating, showIcons, onClick }) => {
     const getStoneStyle = (color) => {
         const styles = {
-            'O': { background: 'linear-gradient(135deg, #ff9f6b 0%, #e67e22 100%)', shapeClass: 'stone-circle' },
-            'C': { background: 'linear-gradient(135deg, #6bb6ff 0%, #22a7e6 100%)', shapeClass: 'stone-diamond' },
-            'P': { background: 'linear-gradient(135deg, #d46bff 0%, #9b22e6 100%)', shapeClass: 'stone-star' }
+            'O': {
+                background: 'radial-gradient(circle at 30% 30%, #ffb88c 0%, #ff9f6b 30%, #e67e22 70%, #c56615 100%)',
+                boxShadow: '0 4px 8px rgba(230, 126, 34, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3), inset 0 -2px 4px rgba(0, 0, 0, 0.2)',
+                shapeClass: 'stone-circle'
+            },
+            'C': {
+                background: 'radial-gradient(circle at 30% 30%, #8fc9ff 0%, #6bb6ff 30%, #22a7e6 70%, #1a85b8 100%)',
+                boxShadow: '0 4px 8px rgba(34, 167, 230, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3), inset 0 -2px 4px rgba(0, 0, 0, 0.2)',
+                shapeClass: 'stone-diamond'
+            },
+            'P': {
+                background: 'radial-gradient(circle at 30% 30%, #e88cff 0%, #d46bff 30%, #9b22e6 70%, #7a1bb8 100%)',
+                boxShadow: '0 4px 8px rgba(155, 34, 230, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3), inset 0 -2px 4px rgba(0, 0, 0, 0.2)',
+                shapeClass: 'stone-star'
+            }
         };
         return styles[color] || {};
     };
@@ -32,11 +44,14 @@ const Cell = ({ row, col, value, isValidMove, isLastMove, isAnimating, showIcons
             {value && value !== 'X' && (
                 <div
                     className={`
-            absolute inset-1 shadow-lg transition-all duration-500
+            absolute inset-1 transition-all duration-500
             ${style.shapeClass}
             ${isAnimating ? 'flip-animation' : ''}
           `}
-                    style={{ background: style.background }}
+                    style={{
+                        background: style.background,
+                        boxShadow: style.boxShadow
+                    }}
                 >
                     {showIcons && (
                         <div className="stone-icon text-lg">
