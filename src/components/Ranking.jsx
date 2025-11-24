@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const Ranking = ({ ranking, onReset, playOrchestraSound }) => {
     const getRankMedal = (rank) => {
@@ -10,10 +10,13 @@ const Ranking = ({ ranking, onReset, playOrchestraSound }) => {
 
     const userRank = ranking.find(r => r.isPlayer).rank;
     const isWinner = userRank === 1;
+    const hasPlayedSound = useRef(false);
 
-    // ランキング表示時に順位に応じた音楽を再生
+    // ランキング表示時に順位に応じた音楽を再生（初回のみ）
     useEffect(() => {
-        if (!playOrchestraSound) return;
+        if (!playOrchestraSound || hasPlayedSound.current) return;
+
+        hasPlayedSound.current = true;
 
         // 同率1位の判定
         const firstPlaceCount = ranking.filter(r => r.rank === 1).length;
@@ -32,6 +35,7 @@ const Ranking = ({ ranking, onReset, playOrchestraSound }) => {
             playOrchestraSound('third_place');
         }
     }, [userRank, ranking, playOrchestraSound]);
+
 
     return (
         <div className="mt-6 bg-slate-700 rounded-lg p-6 shadow-2xl animate-fade-in">
