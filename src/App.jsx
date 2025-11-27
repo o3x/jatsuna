@@ -5,7 +5,9 @@ import GameControls from './components/GameControls';
 import GameInfo from './components/GameInfo';
 import Roulette from './components/Roulette';
 import Ranking from './components/Ranking';
+import Tutorial from './components/Tutorial';
 import { useGameLogic } from './hooks/useGameLogic';
+import { useTutorial } from './hooks/useTutorial';
 
 function App() {
     const [difficulty, setDifficulty] = useState('medium');
@@ -20,6 +22,8 @@ function App() {
         board, scores, gameOver, currentPlayer, validMoves, lastMove, animatingCells,
         aiThinking, turnCount, finalRanking, handleCellClick, resetGame, initAudioContext, playOrchestraSound
     } = useGameLogic(difficulty, soundEnabled, playerTurnPosition, gameStarted, setGameStarted);
+
+    const { isActive: tutorialActive, completeTutorial, skipTutorial, startTutorial } = useTutorial();
 
     const rankingRef = useRef(null);
 
@@ -56,7 +60,7 @@ function App() {
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
                         蛇突奈 <span className="text-2xl md:text-3xl text-gray-400">(Jatsuna)</span>
                     </h1>
-                    <p className="text-gray-400 text-xs">Version 6.1.3</p>
+                    <p className="text-gray-400 text-xs">Version 6.2.0</p>
                     <p className="text-gray-500 text-xs mt-1">
                         © 2025 OHYAMA, Yoshihisa (o3x) | Developed with Claude.ai, Gemini & Antigravity
                     </p>
@@ -88,12 +92,37 @@ function App() {
                             onReset={() => setGameStarted(false)}
                             playOrchestraSound={playOrchestraSound}
                         />
-                    </div>
+
+                        <Board
+                            board={board}
+                            validMoves={validMoves}
+                            lastMove={lastMove}
+                            animatingCells={animatingCells}
+                            onCellClick={handleCellClick}
+                            gameOver={gameOver}
+                            showIcons={showIcons}
+                            CellComponent={Cell}
+                        />
+
+                        {gameOver && finalRanking && (
+                            <div ref={rankingRef}>
+                                <Ranking
+                                    ranking={finalRanking}
+                                    playerTurnPosition={playerTurnPosition}
+                                    onReset={() => setGameStarted(false)}
+                                />
+                            </div>
                         )}
-            </>
+                    </>
                 )}
+
+                <Tutorial
+                    isActive={tutorialActive}
+                    onComplete={completeTutorial}
+                    onSkip={skipTutorial}
+                />
+            </div>
         </div>
-        </div >
     );
 }
 
