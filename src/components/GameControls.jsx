@@ -38,23 +38,22 @@ const GameControls = ({
                 <label className="block text-white font-bold mb-2 text-sm">AI難易度</label>
                 <div className="grid grid-cols-2 gap-2">
                     {[
-                        { id: 'easy', label: 'Easy', color: 'green' },
-                        { id: 'medium', label: 'Medium', color: 'yellow' },
-                        { id: 'hard', label: 'Hard', color: 'red' },
-                        { id: 'superhard', label: 'Super', color: 'purple' },
-                        { id: 'collusion', label: 'Ultimate最凶', color: 'red' }
-                    ].map(({ id, label, color }) => (
+                        { id: 'easy', label: 'Easy', colorClass: 'bg-blue-500 hover:bg-blue-400' },
+                        { id: 'medium', label: 'Medium', colorClass: 'bg-emerald-500 hover:bg-emerald-400' },
+                        { id: 'hard', label: 'Hard', colorClass: 'bg-red-500 hover:bg-red-400' },
+                        { id: 'superhard', label: 'Super', colorClass: 'bg-fuchsia-600 hover:bg-fuchsia-500' },
+                        { id: 'collusion', label: 'Ultimate最凶', colorClass: 'bg-gradient-to-br from-black to-red-700 border border-red-500' }
+                    ].map(({ id, label, colorClass }) => (
                         <button
                             key={id}
                             onClick={() => { initAudioContext(); setDifficulty(id); }}
                             className={`p-3 rounded-lg font-bold transition-all ${difficulty === id ?
-                                id === 'collusion' ? 'bg-gradient-to-br from-red-900 to-red-600 text-white evil-glow' :
-                                    `bg-${color}-600 text-white` :
-                                'bg-slate-600 text-gray-300'
+                                `${colorClass} text-white shadow-lg scale-105` :
+                                'bg-slate-600 text-gray-300 hover:bg-slate-500'
                                 }`}
                         >
                             {label}
-                            {id === 'collusion' && <div className="text-xs">結託モード</div>}
+                            {id === 'collusion' && <div className="text-xs text-red-200">結託モード</div>}
                         </button>
                     ))}
                 </div>
@@ -86,7 +85,7 @@ const GameControls = ({
 
             <button
                 onClick={onStartGame}
-                className="w-full py-3 bg-gradient-to-r from-green-600 to-green-700 text-white text-lg font-bold rounded-lg"
+                className="w-full py-3 bg-gradient-to-r from-green-600 to-green-700 text-white text-lg font-bold rounded-lg hover:from-green-500 hover:to-green-600 shadow-lg transform active:scale-95 transition-all"
             >
                 🎮 ゲーム開始
             </button>
