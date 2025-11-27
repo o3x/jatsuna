@@ -5,7 +5,7 @@ const GameControls = ({
     soundEnabled, setSoundEnabled,
     showIcons, setShowIcons,
     turnOrderMode, setTurnOrderMode,
-    onStartGame, initAudioContext
+    onStartGame, initAudioContext, onShowTutorial
 }) => {
     return (
         <div className="bg-slate-700 rounded-lg p-6 mb-6 shadow-2xl">
@@ -48,9 +48,9 @@ const GameControls = ({
                             key={id}
                             onClick={() => { initAudioContext(); setDifficulty(id); }}
                             className={`p-3 rounded-lg font-bold transition-all ${difficulty === id ?
-                                    id === 'collusion' ? 'bg-gradient-to-br from-red-900 to-red-600 text-white evil-glow' :
-                                        `bg-${color}-600 text-white` :
-                                    'bg-slate-600 text-gray-300'
+                                id === 'collusion' ? 'bg-gradient-to-br from-red-900 to-red-600 text-white evil-glow' :
+                                    `bg-${color}-600 text-white` :
+                                'bg-slate-600 text-gray-300'
                                 }`}
                         >
                             {label}
@@ -76,6 +76,13 @@ const GameControls = ({
                     {showIcons ? '●◆★' : '形状'}
                 </button>
             </div>
+
+            <button
+                onClick={onShowTutorial}
+                className="w-full py-2 bg-slate-600 text-white text-sm font-bold rounded-lg mb-2 hover:bg-slate-500 transition-all"
+            >
+                📚 チュートリアル
+            </button>
 
             <button
                 onClick={onStartGame}
