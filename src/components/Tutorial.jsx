@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const Tutorial = ({ isActive, onComplete, onSkip }) => {
     const [currentStep, setCurrentStep] = useState(0);

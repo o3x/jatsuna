@@ -1,4 +1,4 @@
-import React from 'react';
+// React import removed associated with unused variable lint warning
 import { PLAYERS, PLAYER_NAMES, PLAYER_SHAPES } from '../utils/constants';
 
 const GameInfo = ({
@@ -52,7 +52,7 @@ const GameInfo = ({
                         <div
                             key={player}
                             className={`p-2 rounded-lg transition-all ${isCollusionAI ? 'ring-2 ring-red-600 bg-red-900 collusion-pulse' :
-                                    isCurrentPlayer ? 'ring-2 ring-yellow-400 bg-slate-600' : 'bg-slate-800'
+                                isCurrentPlayer ? 'ring-2 ring-yellow-400 bg-slate-600' : 'bg-slate-800'
                                 }`}
                         >
                             <div className="flex items-center gap-2">

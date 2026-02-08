@@ -67,7 +67,7 @@ export const useGameLogic = (difficulty, soundEnabled, playerTurnPosition, gameS
         setCurrentPlayer((currentPlayer + 1) % 3);
     }, [gameOver, gameStarted, aiThinking, currentPlayer, playerTurnPosition, validMoves, board, makeMove, initAudioContext, playOrchestraSound]);
 
-    // AI Turn Effect
+    // AIの手番エフェクト
     useEffect(() => {
         if (!gameStarted || gameOver) return;
 

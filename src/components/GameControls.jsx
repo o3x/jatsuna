@@ -1,4 +1,4 @@
-import React from 'react';
+// React import removed associated with unused variable lint warning
 
 const GameControls = ({
     difficulty, setDifficulty,

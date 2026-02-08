@@ -33,7 +33,7 @@ const evaluateBoardCollusion = (board, aiColor, playerColor) => {
 
     const aiMoves = getValidMoves(board, aiColor);
     for (const move of aiMoves) {
-        const playerCaptures = move.captures.filter(([r, c, col]) => col === playerColor).length;
+        const playerCaptures = move.captures.filter(([, , col]) => col === playerColor).length;
         evaluation += playerCaptures * 15;
     }
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { PLAYER_SHAPES, PLAYER_NAMES } from '../utils/constants';
+// React import removed associated with unused variable lint warning
+import { PLAYER_SHAPES } from '../utils/constants';
 
 const Cell = ({ row, col, value, isValidMove, isLastMove, isAnimating, showIcons, onClick }) => {
     const getStoneStyle = (color) => {

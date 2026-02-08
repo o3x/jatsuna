@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Roulette = ({ onComplete, playOrchestraSound }) => {
     const [rouletteResult, setRouletteResult] = useState(null);

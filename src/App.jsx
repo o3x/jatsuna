@@ -1,6 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+// 蛇突奈 (Jatsuna) React Version
+// Last Updated: 2026-02-08
+
+import { useState, useRef, useEffect } from 'react';
 import Board from './components/Board';
-import Cell from './components/Cell';
+// Cell import removed associated with unused variable lint warning
 import GameControls from './components/GameControls';
 import GameInfo from './components/GameInfo';
 import Roulette from './components/Roulette';
@@ -60,9 +63,10 @@ function App() {
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
                         蛇突奈 <span className="text-2xl md:text-3xl text-gray-400">(Jatsuna)</span>
                     </h1>
-                    <p className="text-gray-400 text-xs">Version 6.3.2</p>
+                    <p className="text-gray-400 text-xs">Version 6.3.4</p>
                     <p className="text-gray-500 text-xs mt-1">
                         © 2025 OHYAMA, Yoshihisa (o3x) | Developed with Claude.ai, Gemini & Antigravity
+
                     </p>
                 </div>
 

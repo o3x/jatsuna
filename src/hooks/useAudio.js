@@ -7,16 +7,16 @@ export const useAudio = (enabled) => {
         if (!audioContextRef.current) {
             try {
                 audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
-                console.log('🔊 AudioContext created');
+                console.log('🔊 AudioContextを作成しました');
             } catch (e) {
-                console.error("AudioContext not supported", e);
+                console.error("AudioContextはサポートされていません", e);
                 return;
             }
         }
 
         if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
             audioContextRef.current.resume();
-            console.log('▶️ AudioContext resumed');
+            console.log('▶️ AudioContextを再開しました');
         }
     }, []);
 
@@ -39,7 +39,7 @@ export const useAudio = (enabled) => {
 
     const playOrchestraSound = useCallback((type, captureCount = 0) => {
         if (!enabled) {
-            console.log('🔇 Sound disabled');
+            console.log('🔇 サウンドは無効です');
             return;
         }
 
@@ -48,7 +48,7 @@ export const useAudio = (enabled) => {
 
         const ctx = audioContextRef.current;
         const now = ctx.currentTime;
-        console.log('🎵 Playing sound:', type);
+        console.log('🎵 サウンド再生:', type);
 
         if (type === 'place') {
             // 石を置く音

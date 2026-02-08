@@ -2,7 +2,7 @@ import { BOARD_SIZE, COLOR_TRANSFORM, DIRECTIONS } from './constants.js';
 
 export const createInitialBoard = () => {
     const board = Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(null));
-    // Wide Triangle Setup (Balanced)
+    // ワイドトライアングル配置（バランス型）
     board[2][3] = 'O';
     board[4][5] = 'C';
     board[5][2] = 'P';

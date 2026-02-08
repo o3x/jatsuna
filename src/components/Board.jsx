@@ -1,4 +1,4 @@
-import React from 'react';
+// React import removed associated with unused variable lint warning
 import Cell from './Cell';
 import { BOARD_SIZE } from '../utils/constants';
 
