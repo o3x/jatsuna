@@ -5,7 +5,7 @@ import { PLAYERS, PLAYER_NAMES, PLAYER_SHAPES } from '../utils/constants';
 
 const GameInfo = ({
     difficulty, turnCount, scores, currentPlayer, playerTurnPosition,
-    aiThinking, thinkingDots, onReset
+    aiThinking, thinkingDots, gameOver, onReset
 }) => {
     const getStoneStyle = (color) => {
         const styles = {
@@ -31,16 +31,18 @@ const GameInfo = ({
                     <div className="text-xs text-gray-400">ターン</div>
                     <div className="font-bold text-xl">{turnCount}</div>
                 </div>
-                <button
-                    onClick={() => {
-                        if (window.confirm('リセット?')) {
-                            onReset();
-                        }
-                    }}
-                    className="px-3 py-1 bg-red-600 text-white rounded text-sm font-bold"
-                >
-                    🔄
-                </button>
+                {!gameOver && (
+                    <button
+                        onClick={() => {
+                            if (window.confirm('リセット?')) {
+                                onReset();
+                            }
+                        }}
+                        className="px-3 py-1 bg-red-600 text-white rounded text-sm font-bold"
+                    >
+                        🔄
+                    </button>
+                )}
             </div>
 
             <div className="grid grid-cols-3 gap-2">

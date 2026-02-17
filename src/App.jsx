@@ -1,6 +1,6 @@
 // 蛇突奈 (Jatsuna) React Version
-// Last Updated: Mon Feb 17 18:45:00 JST 2026
-// Version: 6.5.0
+// Last Updated: Mon Feb 17 19:01:00 JST 2026
+// Version: 6.5.1
 
 import { useState, useRef, useEffect } from 'react';
 import Board from './components/Board';
@@ -48,6 +48,17 @@ function App() {
         resetGame();
     };
 
+    // 同じ設定で再プレイ（ルーレットから）
+    const replay = () => {
+        initAudioContext();
+        setShowRoulette(true);
+    };
+
+    // メニュー画面に戻る
+    const backToMenu = () => {
+        setGameStarted(false);
+    };
+
     return (
         <div className="h-screen bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center p-4 overflow-hidden">
             <div className="max-w-4xl w-full max-h-full overflow-y-auto custom-scrollbar">
@@ -55,7 +66,7 @@ function App() {
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
                         蛇突奈 <span className="text-2xl md:text-3xl text-gray-400">(Jatsuna)</span>
                     </h1>
-                    <p className="text-gray-400 text-xs">Version 6.5.0</p>
+                    <p className="text-gray-400 text-xs">Version 6.5.1</p>
                     <p className="text-gray-500 text-xs mt-1">
                         © 2025-2026 OHYAMA, Yoshihisa (o3x) | Developed with Claude.ai, Gemini & Antigravity
                     </p>
@@ -101,7 +112,8 @@ function App() {
                             scores={scores}
                             currentPlayer={currentPlayer}
                             playerTurnPosition={playerTurnPosition}
-                            onReset={() => setGameStarted(false)}
+                            gameOver={gameOver}
+                            onReset={backToMenu}
                             playOrchestraSound={playOrchestraSound}
                         />
 
@@ -121,7 +133,8 @@ function App() {
                                 <Ranking
                                     ranking={finalRanking}
                                     playOrchestraSound={playOrchestraSound}
-                                    onReset={() => setGameStarted(false)}
+                                    onReplay={replay}
+                                    onBackToMenu={backToMenu}
                                 />
                             </div>
                         )}

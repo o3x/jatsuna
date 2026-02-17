@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const Ranking = ({ ranking, onReset, playOrchestraSound }) => {
+const Ranking = ({ ranking, onReplay, onBackToMenu, playOrchestraSound }) => {
     const getRankMedal = (rank) => {
         if (rank === 1) return '🥇';
         if (rank === 2) return '🥈';
@@ -83,12 +83,20 @@ const Ranking = ({ ranking, onReset, playOrchestraSound }) => {
                 ))}
             </div>
 
-            <button
-                onClick={onReset}
-                className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-xl font-bold rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            >
-                もう一度プレイ 🔄
-            </button>
+            <div className="flex gap-3">
+                <button
+                    onClick={onReplay}
+                    className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-base font-bold rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                    🔄 もう一度プレイ
+                </button>
+                <button
+                    onClick={onBackToMenu}
+                    className="flex-1 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white text-base font-bold rounded-lg hover:from-slate-500 hover:to-slate-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                    🏠 メニューに戻る
+                </button>
+            </div>
         </div>
     );
 };

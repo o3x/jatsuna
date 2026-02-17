@@ -1,5 +1,21 @@
 # Changelog
  
+## [6.5.1]
+**日時**: Mon Feb 17 19:01:00 JST 2026  
+**変更内容**:
+
+### Fixed
+- **ゲーム終了画面のUX改善**: ゲーム終了後のボタン操作を整理しました。
+  - **リセットボタンの非表示化**: ゲーム終了後はGameInfo上部のリセットボタンを非表示にし、混乱を防止
+  - **2択ボタン化**: Ranking画面に「🔄 もう一度プレイ」（同じ設定でルーレットから再開）と「🏠 メニューに戻る」（設定画面に戻る）の2ボタンを配置
+
+### Added
+- **SEO対策**: Google検索やSNS共有に対応しました。
+  - meta description / keywords / robots / canonical URL を追加
+  - Open Graph (OGP) タグ追加（Facebook, LINE, Discord等でのリンク共有対応）
+  - Twitter Card タグ追加
+  - JSON-LD 構造化データ（VideoGameスキーマ）追加
+
 ## [6.5.0]
 **日時**: Mon Feb 17 18:45:00 JST 2026  
 **変更内容**:
