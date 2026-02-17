@@ -46,4 +46,5 @@
 
 - 📚 [公式ルールブック](docs/RULEBOOK.md) - ゲームの完全なルール説明
 - 💡 [攻略・必勝ガイド](docs/STRATEGY.md) - AIロジックに基づく戦略・ Ultimateモード対策
+- 📝 [TODO リスト](docs/TODO.md) - 今後の課題・将来の展望
 - 📊 [バランス検証データ](docs/balance/) - AIシミュレーションによるゲームバランス検証レポート
