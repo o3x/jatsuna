@@ -41,3 +41,8 @@
 - React 18
 - Vite
 - Tailwind CSS
+
+## ドキュメント
+
+- 📚 [公式ルールブック](docs/RULEBOOK.md) - ゲームの完全なルール説明
+- 📊 [バランス検証データ](docs/balance/) - AIシミュレーションによるゲームバランス検証レポート
