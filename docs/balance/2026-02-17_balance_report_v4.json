@@ -1,0 +1,330 @@
+[
+  {
+    "meta": {
+      "conditionId": "wide_triangle_wall",
+      "conditionName": "Wide Triangle + 中央壁",
+      "description": "現在の暫定最適。均等手数15手。",
+      "timestamp": "2026-02-17T10:45:08.581Z",
+      "localTime": "2026/2/17 19:45:08",
+      "executor": "Antigravity AI (Claude) + OHYAMA Yoshihisa",
+      "aiMode": "topk_soft",
+      "simulationCount": 3000,
+      "boardSize": 7,
+      "turnOrderRotation": true,
+      "elapsedSeconds": 1.6
+    },
+    "turnOrderWinRates": {
+      "first": {
+        "value": "31.1%",
+        "ci95": "[29.4%, 32.8%]"
+      },
+      "second": {
+        "value": "34.4%",
+        "ci95": "[32.7%, 36.1%]"
+      },
+      "third": {
+        "value": "28.8%",
+        "ci95": "[27.1%, 30.4%]"
+      }
+    },
+    "colorWinRates": {
+      "O_orb": "33.5%",
+      "C_gem": "31.1%",
+      "P_stella": "29.7%",
+      "draws": "5.8%"
+    },
+    "avgScoresByTurnOrder": {
+      "first": "15.9",
+      "second": "16.2",
+      "third": "15.9"
+    },
+    "avgMovesByTurnOrder": {
+      "first": "15.0",
+      "second": "15.0",
+      "third": "15.0"
+    },
+    "balanceMetrics": {
+      "turnOrderWinRateSpread": "5.6%",
+      "colorWinRateSpread": "3.8%"
+    },
+    "rawStats": {
+      "colorWins": {
+        "O": 1005,
+        "C": 932,
+        "P": 890,
+        "draw": 173
+      },
+      "colorScores": {
+        "O": 48666,
+        "C": 47933,
+        "P": 47401
+      },
+      "colorMoves": {
+        "O": 45000,
+        "C": 45000,
+        "P": 45000
+      },
+      "turnOrderWins": {
+        "first": 933,
+        "second": 1031,
+        "third": 863
+      },
+      "turnOrderScores": {
+        "first": 47651,
+        "second": 48607,
+        "third": 47742
+      },
+      "turnOrderMoves": {
+        "first": 45000,
+        "second": 45000,
+        "third": 45000
+      }
+    }
+  },
+  {
+    "meta": {
+      "conditionId": "tight_triangle_wall",
+      "conditionName": "Tight Triangle + 中央壁",
+      "description": "中央付近に密集。均等手数15手。",
+      "timestamp": "2026-02-17T10:45:10.078Z",
+      "localTime": "2026/2/17 19:45:10",
+      "executor": "Antigravity AI (Claude) + OHYAMA Yoshihisa",
+      "aiMode": "topk_soft",
+      "simulationCount": 3000,
+      "boardSize": 7,
+      "turnOrderRotation": true,
+      "elapsedSeconds": 1.5
+    },
+    "turnOrderWinRates": {
+      "first": {
+        "value": "31.0%",
+        "ci95": "[29.3%, 32.7%]"
+      },
+      "second": {
+        "value": "34.7%",
+        "ci95": "[33.0%, 36.4%]"
+      },
+      "third": {
+        "value": "28.7%",
+        "ci95": "[27.1%, 30.4%]"
+      }
+    },
+    "colorWinRates": {
+      "O_orb": "31.4%",
+      "C_gem": "30.9%",
+      "P_stella": "32.1%",
+      "draws": "5.6%"
+    },
+    "avgScoresByTurnOrder": {
+      "first": "15.9",
+      "second": "16.3",
+      "third": "15.8"
+    },
+    "avgMovesByTurnOrder": {
+      "first": "15.0",
+      "second": "15.0",
+      "third": "15.0"
+    },
+    "balanceMetrics": {
+      "turnOrderWinRateSpread": "6.0%",
+      "colorWinRateSpread": "1.2%"
+    },
+    "rawStats": {
+      "colorWins": {
+        "O": 942,
+        "C": 927,
+        "P": 964,
+        "draw": 167
+      },
+      "colorScores": {
+        "O": 48018,
+        "C": 47671,
+        "P": 48311
+      },
+      "colorMoves": {
+        "O": 45000,
+        "C": 45000,
+        "P": 45000
+      },
+      "turnOrderWins": {
+        "first": 930,
+        "second": 1041,
+        "third": 862
+      },
+      "turnOrderScores": {
+        "first": 47682,
+        "second": 48913,
+        "third": 47405
+      },
+      "turnOrderMoves": {
+        "first": 45000,
+        "second": 45000,
+        "third": 45000
+      }
+    }
+  },
+  {
+    "meta": {
+      "conditionId": "edge_start_wall",
+      "conditionName": "Edge Start + 中央壁",
+      "description": "各プレイヤーが辺の近くからスタート。",
+      "timestamp": "2026-02-17T10:45:11.579Z",
+      "localTime": "2026/2/17 19:45:11",
+      "executor": "Antigravity AI (Claude) + OHYAMA Yoshihisa",
+      "aiMode": "topk_soft",
+      "simulationCount": 3000,
+      "boardSize": 7,
+      "turnOrderRotation": true,
+      "elapsedSeconds": 1.5
+    },
+    "turnOrderWinRates": {
+      "first": {
+        "value": "29.7%",
+        "ci95": "[28.1%, 31.4%]"
+      },
+      "second": {
+        "value": "29.5%",
+        "ci95": "[27.8%, 31.1%]"
+      },
+      "third": {
+        "value": "35.3%",
+        "ci95": "[33.6%, 37.0%]"
+      }
+    },
+    "colorWinRates": {
+      "O_orb": "31.3%",
+      "C_gem": "33.3%",
+      "P_stella": "29.8%",
+      "draws": "5.5%"
+    },
+    "avgScoresByTurnOrder": {
+      "first": "15.5",
+      "second": "15.8",
+      "third": "16.7"
+    },
+    "avgMovesByTurnOrder": {
+      "first": "15.0",
+      "second": "15.0",
+      "third": "15.0"
+    },
+    "balanceMetrics": {
+      "turnOrderWinRateSpread": "5.8%",
+      "colorWinRateSpread": "3.5%"
+    },
+    "rawStats": {
+      "colorWins": {
+        "O": 940,
+        "C": 999,
+        "P": 895,
+        "draw": 166
+      },
+      "colorScores": {
+        "O": 47856,
+        "C": 48294,
+        "P": 47850
+      },
+      "colorMoves": {
+        "O": 45000,
+        "C": 45000,
+        "P": 45000
+      },
+      "turnOrderWins": {
+        "first": 892,
+        "second": 884,
+        "third": 1058
+      },
+      "turnOrderScores": {
+        "first": 46547,
+        "second": 47405,
+        "third": 50048
+      },
+      "turnOrderMoves": {
+        "first": 45000,
+        "second": 45000,
+        "third": 45000
+      }
+    }
+  },
+  {
+    "meta": {
+      "conditionId": "diagonal_wall",
+      "conditionName": "Diagonal + 中央壁",
+      "description": "対角線上に配置。",
+      "timestamp": "2026-02-17T10:45:13.036Z",
+      "localTime": "2026/2/17 19:45:13",
+      "executor": "Antigravity AI (Claude) + OHYAMA Yoshihisa",
+      "aiMode": "topk_soft",
+      "simulationCount": 3000,
+      "boardSize": 7,
+      "turnOrderRotation": true,
+      "elapsedSeconds": 1.5
+    },
+    "turnOrderWinRates": {
+      "first": {
+        "value": "28.4%",
+        "ci95": "[26.8%, 30.0%]"
+      },
+      "second": {
+        "value": "37.8%",
+        "ci95": "[36.1%, 39.6%]"
+      },
+      "third": {
+        "value": "28.6%",
+        "ci95": "[27.0%, 30.2%]"
+      }
+    },
+    "colorWinRates": {
+      "O_orb": "31.8%",
+      "C_gem": "31.3%",
+      "P_stella": "31.8%",
+      "draws": "5.2%"
+    },
+    "avgScoresByTurnOrder": {
+      "first": "15.4",
+      "second": "16.9",
+      "third": "15.7"
+    },
+    "avgMovesByTurnOrder": {
+      "first": "15.0",
+      "second": "15.0",
+      "third": "15.0"
+    },
+    "balanceMetrics": {
+      "turnOrderWinRateSpread": "9.4%",
+      "colorWinRateSpread": "0.5%"
+    },
+    "rawStats": {
+      "colorWins": {
+        "O": 954,
+        "C": 938,
+        "P": 953,
+        "draw": 155
+      },
+      "colorScores": {
+        "O": 48140,
+        "C": 47784,
+        "P": 48076
+      },
+      "colorMoves": {
+        "O": 45000,
+        "C": 45000,
+        "P": 45000
+      },
+      "turnOrderWins": {
+        "first": 852,
+        "second": 1135,
+        "third": 858
+      },
+      "turnOrderScores": {
+        "first": 46302,
+        "second": 50578,
+        "third": 47120
+      },
+      "turnOrderMoves": {
+        "first": 45000,
+        "second": 45000,
+        "third": 45000
+      }
+    }
+  }
+]
