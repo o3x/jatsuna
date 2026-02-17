@@ -36,8 +36,16 @@ function App() {
 
     // 戦績データの読み込み
     const fetchStats = () => {
-        const saved = localStorage.getItem('jatsuna_stats');
-        if (saved) setStats(JSON.parse(saved));
+        try {
+            const saved = localStorage.getItem('jatsuna_stats');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                setStats(parsed || { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 });
+            }
+        } catch (e) {
+            console.error('統計データの読み込みに失敗しました:', e);
+            setStats({ totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 });
+        }
     };
 
     useEffect(() => {
@@ -116,7 +124,7 @@ function App() {
 
                         <div className="text-center">
                             <p className="text-slate-600 text-[9px]">
-                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v7.1.0
+                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v7.1.1
                             </p>
                         </div>
                     </div>

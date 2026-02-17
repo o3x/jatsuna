@@ -20,17 +20,18 @@ const StatsDashboard = ({ isOpen, onClose, stats }) => {
 
     // 統計計算
     const calculatedStats = useMemo(() => {
-        if (!currentStats || currentStats.totalGames === 0) {
+        if (!currentStats || (currentStats.totalGames || 0) === 0) {
             return { avgRank: '-', topRate: 0, winDistribution: [0, 0, 0], total: 0 };
         }
 
-        const total = currentStats.totalGames;
-        const first = currentStats.ranks[1] || 0;
-        const second = currentStats.ranks[2] || 0;
-        const third = currentStats.ranks[3] || 0;
+        const total = currentStats.totalGames || 0;
+        const ranks = currentStats.ranks || {};
+        const first = ranks[1] || 0;
+        const second = ranks[2] || 0;
+        const third = ranks[3] || 0;
 
-        const avgRank = ((first * 1 + second * 2 + third * 3) / total).toFixed(2);
-        const topRate = ((first / total) * 100).toFixed(1);
+        const avgRank = total > 0 ? ((first * 1 + second * 2 + third * 3) / total).toFixed(2) : '-';
+        const topRate = total > 0 ? ((first / total) * 100).toFixed(1) : '0.0';
 
         return {
             avgRank,
