@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from 'react';
 import { PLAYERS, JATSUNA_CONFIG } from '../utils/constants';
 import { createInitialBoard, getValidMoves, makeMoveSimulation, calculateScores } from '../utils/gameRules';
 import { useAI } from './useAI';
