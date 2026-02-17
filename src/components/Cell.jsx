@@ -1,7 +1,6 @@
-// React import removed associated with unused variable lint warning
 import { PLAYER_SHAPES } from '../utils/constants';
 
-const Cell = ({ row, col, value, isValidMove, isLastMove, isAnimating, showIcons, onClick, barrierFreeMode }) => {
+const Cell = ({ row, col, value, isValidMove, isLastMove, isAnimating, showIcons, onClick, barrierFreeMode, animationSpeed }) => {
     const getStoneStyle = (color) => {
         // 通常(宝石風)の設定
         const normalStyles = {
@@ -51,6 +50,7 @@ const Cell = ({ row, col, value, isValidMove, isLastMove, isAnimating, showIcons
     };
 
     const style = value && value !== 'X' ? getStoneStyle(value) : {};
+    const transitionDuration = animationSpeed === 'fast' ? 'duration-200' : 'duration-500';
 
     return (
         <div
@@ -71,7 +71,7 @@ const Cell = ({ row, col, value, isValidMove, isLastMove, isAnimating, showIcons
             {value && value !== 'X' && (
                 <div
                     className={`
-            absolute inset-1 transition-all duration-500
+            absolute inset-1 transition-all ${transitionDuration}
             ${style.shapeClass}
             ${isAnimating ? 'flip-animation' : ''}
           `}

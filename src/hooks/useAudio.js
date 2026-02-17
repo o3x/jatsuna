@@ -14,9 +14,19 @@ export const useAudio = (enabled) => {
             }
         }
 
-        if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
-            audioContextRef.current.resume();
-            console.log('▶️ AudioContextを再開しました');
+        if (audioContextRef.current.state === 'suspended') {
+            audioContextRef.current.resume().then(() => {
+                console.log('▶️ AudioContextを再開しました');
+
+                // iOS用のアンロック処理 (無音再生)
+                const ctx = audioContextRef.current;
+                const buffer = ctx.createBuffer(1, 1, 22050);
+                const source = ctx.createBufferSource();
+                source.buffer = buffer;
+                source.connect(ctx.destination);
+                source.start(0);
+                console.log('🔓 iOS音声再生のアンロックを試みました');
+            });
         }
     }, []);
 

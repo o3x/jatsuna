@@ -2,13 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply font-['Zen_Kaku_Gothic_New',_sans-serif] antialiased;
+  }
+}
+
 @layer components {
+  .font-inter { font-family: 'Inter', sans-serif; }
+  
+  .glass-panel {
+    @apply bg-slate-800/80 backdrop-blur-md border border-slate-600/50 shadow-2xl;
+  }
+
+  .premium-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+    @apply backdrop-blur-lg border border-slate-700/50 shadow-2xl rounded-xl;
+  }
+
   .fixed-cell {
     background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
     position: relative;
     border: 2px solid #4a5568;
   }
   
+  /* ... existing styles ... */
   .fixed-cell::before {
     content: "✕";
     position: absolute;
@@ -40,4 +58,11 @@
   .rank-1 { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); border: 3px solid #FFD700; }
   .rank-2 { background: linear-gradient(135deg, #C0C0C0 0%, #A9A9A9 100%); border: 3px solid #C0C0C0; }
   .rank-3 { background: linear-gradient(135deg, #CD7F32 0%, #B8860B 100%); border: 3px solid #CD7F32; }
+
+  /* アニメーション用 */
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in-up { animation: fade-in-up 0.4s ease-out forwards; }
 }

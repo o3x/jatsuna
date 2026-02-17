@@ -1,60 +1,74 @@
-// 蛇突奈 (Jatsuna) - ゲーム設定コンポーネント
-// Last Updated: Tue Feb 18 20:05:00 JST 2026
-// Version: 6.7.0
-
 const GameControls = ({
     difficulty, setDifficulty,
-    barrierFreeMode, setBarrierFreeMode,
-    onStartGame, initAudioContext
+    onStartGame, onOpenSettings, onOpenStats, onOpenTutorial,
+    initAudioContext
 }) => {
     return (
-        <div className="bg-slate-700 rounded-lg p-4 mb-4 shadow-2xl">
-            <div className="mb-3">
-                <label className="block text-gray-400 font-bold mb-2 text-xs">AI難易度</label>
-                <div className="grid grid-cols-3 gap-1.5">
+        <div className="premium-card p-6 mb-6">
+            <div className="mb-6">
+                <div className="flex items-center justify-between mb-3">
+                    <label className="text-gray-400 font-black text-[10px] uppercase tracking-widest flex items-center gap-2">
+                        <span className="w-1 h-3 bg-blue-500 rounded-full"></span> AI Difficulty
+                    </label>
+                </div>
+                <div className="grid grid-cols-5 gap-2">
                     {[
-                        { id: 'easy', label: 'Easy', colorClass: 'bg-blue-500 hover:bg-blue-400' },
-                        { id: 'medium', label: 'Medium', colorClass: 'bg-emerald-500 hover:bg-emerald-400' },
-                        { id: 'hard', label: 'Hard', colorClass: 'bg-red-500 hover:bg-red-400' },
-                        { id: 'superhard', label: 'Super', colorClass: 'bg-fuchsia-600 hover:bg-fuchsia-500' },
-                        { id: 'collusion', label: 'Ultimate', colorClass: 'bg-gradient-to-br from-black to-red-700 border border-red-500' }
-                    ].map(({ id, label, colorClass }) => (
+                        { id: 'easy', label: 'EASY', color: 'from-blue-500 to-blue-700' },
+                        { id: 'medium', label: 'MED', color: 'from-emerald-500 to-emerald-700' },
+                        { id: 'hard', label: 'HARD', color: 'from-amber-500 to-amber-700' },
+                        { id: 'superhard', label: 'SPHR', color: 'from-rose-500 to-fuchsia-700' },
+                        { id: 'collusion', label: 'ULTI', color: 'from-slate-900 to-red-900' }
+                    ].map(({ id, label, color }) => (
                         <button
                             key={id}
                             onClick={() => { initAudioContext(); setDifficulty(id); }}
-                            className={`py-1.5 px-2 rounded-md font-bold text-xs transition-all ${difficulty === id ?
-                                `${colorClass} text-white shadow-md scale-105` :
-                                'bg-slate-600 text-gray-300 hover:bg-slate-500'
+                            className={`py-2 rounded-lg font-black font-inter text-[10px] transition-all border ${difficulty === id ?
+                                `bg-gradient-to-br ${color} text-white border-white/20 shadow-lg scale-105 active:scale-95` :
+                                'bg-slate-800 text-gray-500 border-slate-700 hover:bg-slate-750 hover:text-gray-400'
                                 }`}
                         >
                             {label}
-                            {id === 'collusion' && <div className="text-[10px] text-red-200">結託モード</div>}
                         </button>
                     ))}
                 </div>
             </div>
 
-            <div className="mb-4 grid grid-cols-1 gap-2">
-                <div className="flex items-center justify-between bg-slate-600/50 p-2 rounded-md border border-slate-500/30">
-                    <span className="text-gray-300 text-xs font-bold">バリアフリー設定</span>
-                    <button
-                        onClick={() => setBarrierFreeMode(!barrierFreeMode)}
-                        className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${barrierFreeMode
-                            ? 'bg-blue-600 text-white border-blue-400 shadow-[0_0_10px_rgba(37,99,235,0.4)]'
-                            : 'bg-slate-700 text-gray-400 border-slate-500'
-                            } border`}
-                    >
-                        {barrierFreeMode ? 'ON (高判別)' : 'OFF (標準)'}
-                    </button>
-                </div>
+            <div className="grid grid-cols-3 gap-3 mb-6">
+                <button
+                    onClick={() => { initAudioContext(); onOpenStats(); }}
+                    className="flex flex-col items-center justify-center p-3 bg-slate-800/50 rounded-xl border border-slate-700/50 hover:bg-slate-800 transition-all group"
+                >
+                    <span className="text-xl mb-1 group-hover:scale-110 transition-transform">📊</span>
+                    <span className="text-[9px] font-bold text-gray-400">戦績統計</span>
+                </button>
+                <button
+                    onClick={() => { initAudioContext(); onOpenSettings(); }}
+                    className="flex flex-col items-center justify-center p-3 bg-slate-800/50 rounded-xl border border-slate-700/50 hover:bg-slate-800 transition-all group"
+                >
+                    <span className="text-xl mb-1 group-hover:rotate-45 transition-transform duration-500">⚙️</span>
+                    <span className="text-[9px] font-bold text-gray-400">詳細設定</span>
+                </button>
+                <button
+                    onClick={() => { initAudioContext(); onOpenTutorial(); }}
+                    className="flex flex-col items-center justify-center p-3 bg-slate-800/50 rounded-xl border border-slate-700/50 hover:bg-slate-800 transition-all group"
+                >
+                    <span className="text-xl mb-1 group-hover:scale-110 transition-transform">📖</span>
+                    <span className="text-[9px] font-bold text-gray-400">遊び方</span>
+                </button>
             </div>
 
             <button
                 onClick={onStartGame}
-                className="w-full py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white text-base font-bold rounded-lg hover:from-green-500 hover:to-green-600 shadow-lg transform active:scale-95 transition-all"
+                className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-lg font-black rounded-2xl hover:from-emerald-400 hover:to-emerald-500 shadow-[0_8px_20px_rgba(16,185,129,0.3)] transform active:scale-95 transition-all mb-4 relative overflow-hidden group"
             >
-                🎮 ゲーム開始
+                <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
+                🎮 GAME START
             </button>
+
+            <div className="flex justify-center gap-6 pt-4 border-t border-slate-800/50">
+                <a href="https://github.com/o3x/jatsuna/blob/main/docs/RULEBOOK.md" target="_blank" rel="noreferrer" className="text-[10px] font-bold text-gray-500 hover:text-white transition-colors">RULEBOOK</a>
+                <a href="https://github.com/o3x/jatsuna/blob/main/docs/STRATEGY.md" target="_blank" rel="noreferrer" className="text-[10px] font-bold text-gray-500 hover:text-white transition-colors">STRATEGIES</a>
+            </div>
         </div>
     );
 };

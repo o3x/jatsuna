@@ -26,6 +26,7 @@ const Board = ({ board, validMoves, lastMove, animatingCells, showIcons, onCellC
                                 isAnimating={isAnimating}
                                 showIcons={showIcons}
                                 barrierFreeMode={barrierFreeMode}
+                                animationSpeed={animationSpeed}
                                 onClick={onCellClick}
                             />
                         );

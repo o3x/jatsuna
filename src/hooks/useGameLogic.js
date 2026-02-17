@@ -83,6 +83,23 @@ export const useGameLogic = (difficulty, soundEnabled, playerTurnPosition, gameS
                 setGameOver(true);
                 const ranking = calculateRanking();
                 setFinalRanking(ranking);
+
+                // 戦績記録
+                const playerResult = ranking.find(r => r.isPlayer);
+                if (playerResult) {
+                    const statsKey = 'jatsuna_stats';
+                    const currentStats = JSON.parse(localStorage.getItem(statsKey)) || {
+                        totalGames: 0,
+                        ranks: { 1: 0, 2: 0, 3: 0 },
+                        bestScore: 0
+                    };
+
+                    currentStats.totalGames += 1;
+                    currentStats.ranks[playerResult.rank] = (currentStats.ranks[playerResult.rank] || 0) + 1;
+                    currentStats.bestScore = Math.max(currentStats.bestScore, playerResult.score);
+
+                    localStorage.setItem(statsKey, JSON.stringify(currentStats));
+                }
                 return;
             }
             setTimeout(() => setCurrentPlayer((currentPlayer + 1) % 3), 500);

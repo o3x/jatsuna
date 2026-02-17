@@ -1,7 +1,3 @@
-// 蛇突奈 (Jatsuna) React Version
-// Last Updated: Tue Feb 17 20:30:00 JST 2026
-// Version: 6.7.0
-
 import { useState, useRef, useEffect } from 'react';
 import Board from './components/Board';
 import GameControls from './components/GameControls';
@@ -9,22 +5,44 @@ import GameInfo from './components/GameInfo';
 import Roulette from './components/Roulette';
 import Ranking from './components/Ranking';
 import Tutorial from './components/Tutorial';
+import SettingsModal from './components/SettingsModal';
+import StatsDashboard from './components/StatsDashboard';
 import { useGameLogic } from './hooks/useGameLogic';
 import { useTutorial } from './hooks/useTutorial';
 
 function App() {
-    const [difficulty, setDifficulty] = useState('medium');
-    const [soundEnabled, setSoundEnabled] = useState(true);
-    const [barrierFreeMode, setBarrierFreeMode] = useState(() => {
-        return localStorage.getItem('jatsuna_barrier_free') === 'true';
-    });
+    // 設定値の永続化 (localStorage)
+    const [difficulty, setDifficulty] = useState(() => localStorage.getItem('jatsuna_difficulty') || 'medium');
+    const [soundEnabled, setSoundEnabled] = useState(() => localStorage.getItem('jatsuna_sound') !== 'false');
+    const [barrierFreeMode, setBarrierFreeMode] = useState(() => localStorage.getItem('jatsuna_barrier_free') === 'true');
+    const [animationSpeed, setAnimationSpeed] = useState(() => localStorage.getItem('jatsuna_anim_speed') || 'normal');
+
     const [showRoulette, setShowRoulette] = useState(false);
     const [playerTurnPosition, setPlayerTurnPosition] = useState(0);
     const [gameStarted, setGameStarted] = useState(false);
 
+    // モーダル管理
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [isStatsOpen, setIsStatsOpen] = useState(false);
+    const [stats, setStats] = useState({ totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 });
+
+    // 設定変更時の保存
     useEffect(() => {
+        localStorage.setItem('jatsuna_difficulty', difficulty);
+        localStorage.setItem('jatsuna_sound', soundEnabled);
         localStorage.setItem('jatsuna_barrier_free', barrierFreeMode);
-    }, [barrierFreeMode]);
+        localStorage.setItem('jatsuna_anim_speed', animationSpeed);
+    }, [difficulty, soundEnabled, barrierFreeMode, animationSpeed]);
+
+    // 戦績データの読み込み
+    const fetchStats = () => {
+        const saved = localStorage.getItem('jatsuna_stats');
+        if (saved) setStats(JSON.parse(saved));
+    };
+
+    useEffect(() => {
+        fetchStats();
+    }, [gameStarted]); // ゲーム終了時などに更新されるよう
 
     const {
         board, scores, gameOver, currentPlayer, validMoves, lastMove, animatingCells,
@@ -45,7 +63,6 @@ function App() {
 
     const startGame = () => {
         initAudioContext();
-        // 常にランダム（ルーレット）で手番を決定
         setShowRoulette(true);
     };
 
@@ -55,64 +72,54 @@ function App() {
         resetGame();
     };
 
-    // 同じ設定で再プレイ（ルーレットから）
     const replay = () => {
         initAudioContext();
         setShowRoulette(true);
     };
 
-    // メニュー画面に戻る
     const backToMenu = () => {
         setGameStarted(false);
     };
 
+    const resetStats = () => {
+        localStorage.removeItem('jatsuna_stats');
+        setStats({ totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 });
+    };
+
     return (
-        <div className="h-screen bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center p-4 overflow-hidden">
-            <div className="max-w-4xl w-full max-h-full overflow-y-auto custom-scrollbar">
-                <div className="text-center mb-4">
-                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
-                        蛇突奈 <span className="text-2xl md:text-3xl text-gray-400">(Jatsuna)</span>
+        <div className="h-screen bg-gradient-to-br from-slate-900 via-slate-850 to-black flex items-center justify-center p-4 overflow-hidden font-['Zen_Kaku_Gothic_New',_sans-serif]">
+            <div className="max-w-4xl w-full max-h-full overflow-y-auto custom-scrollbar animate-fade-in-up">
+                <div className="text-center mb-6">
+                    <h1 className="text-5xl md:text-6xl font-black text-white mb-2 tracking-tighter">
+                        蛇突奈 <span className="text-2xl md:text-3xl text-slate-500 font-inter font-light tracking-normal">JATSUNA</span>
                     </h1>
-                    <p className="text-gray-400 text-xs">Version 6.7.0</p>
-                    <p className="text-gray-500 text-xs mt-1">
-                        © 2025-2026 OHYAMA, Yoshihisa (o3x) | Developed with Claude.ai, Gemini & Antigravity
-                    </p>
+                    <div className="flex items-center justify-center gap-2">
+                        <span className="h-px w-8 bg-slate-700"></span>
+                        <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] font-inter">Premium Strategy Board Game</p>
+                        <span className="h-px w-8 bg-slate-700"></span>
+                    </div>
                 </div>
 
                 {showRoulette && <Roulette onComplete={handleRouletteComplete} playOrchestraSound={playOrchestraSound} />}
 
                 {!gameStarted ? (
-                    <>
+                    <div className="space-y-4">
                         <GameControls
                             difficulty={difficulty}
                             setDifficulty={setDifficulty}
-                            barrierFreeMode={barrierFreeMode}
-                            setBarrierFreeMode={setBarrierFreeMode}
                             onStartGame={startGame}
+                            onOpenSettings={() => setIsSettingsOpen(true)}
+                            onOpenStats={() => { fetchStats(); setIsStatsOpen(true); }}
+                            onOpenTutorial={startTutorial}
                             initAudioContext={initAudioContext}
                         />
 
-                        {/* 下部アイコンボタン */}
-                        <div className="flex justify-center gap-4 mt-2">
-                            <button
-                                onClick={() => { initAudioContext(); setSoundEnabled(!soundEnabled); }}
-                                className={`w-12 h-12 rounded-full flex items-center justify-center text-xl transition-all shadow-lg ${soundEnabled
-                                    ? 'bg-slate-600 text-white hover:bg-slate-500'
-                                    : 'bg-slate-700 text-gray-500 hover:bg-slate-600'
-                                    }`}
-                                title={soundEnabled ? 'サウンド ON' : 'サウンド OFF'}
-                            >
-                                {soundEnabled ? '🔊' : '🔇'}
-                            </button>
-                            <button
-                                onClick={startTutorial}
-                                className="w-12 h-12 rounded-full bg-slate-600 text-white flex items-center justify-center text-xl hover:bg-slate-500 transition-all shadow-lg"
-                                title="チュートリアル"
-                            >
-                                ❓
-                            </button>
+                        <div className="text-center">
+                            <p className="text-slate-600 text-[9px]">
+                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v6.9.0
+                            </p>
                         </div>
-                    </>
+                    </div>
                 ) : (
                     <>
                         <GameInfo
@@ -135,11 +142,12 @@ function App() {
                             gameOver={gameOver}
                             showIcons={barrierFreeMode}
                             barrierFreeMode={barrierFreeMode}
+                            animationSpeed={animationSpeed}
                             isPlayerTurn={currentPlayer === playerTurnPosition && !aiThinking && gameStarted && !gameOver}
                         />
 
                         {gameOver && finalRanking && (
-                            <div ref={rankingRef}>
+                            <div ref={rankingRef} className="mt-8">
                                 <Ranking
                                     ranking={finalRanking}
                                     playOrchestraSound={playOrchestraSound}
@@ -150,6 +158,26 @@ function App() {
                         )}
                     </>
                 )}
+
+                {/* モーダル群 */}
+                <SettingsModal
+                    isOpen={isSettingsOpen}
+                    onClose={() => setIsSettingsOpen(false)}
+                    settings={{ soundEnabled, barrierFreeMode, animationSpeed }}
+                    updateSettings={(key, val) => {
+                        if (key === 'soundEnabled') setSoundEnabled(val);
+                        if (key === 'barrierFreeMode') setBarrierFreeMode(val);
+                        if (key === 'animationSpeed') setAnimationSpeed(val);
+                    }}
+                    onResetStats={resetStats}
+                    initAudioContext={initAudioContext}
+                />
+
+                <StatsDashboard
+                    isOpen={isStatsOpen}
+                    onClose={() => setIsStatsOpen(false)}
+                    stats={stats}
+                />
 
                 <Tutorial
                     isActive={tutorialActive}
