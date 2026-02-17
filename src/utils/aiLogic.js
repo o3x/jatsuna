@@ -100,16 +100,15 @@ const evaluateBoard = (board, myColor) => {
     const scores = calculateScores(board);
     score += scores[myColor] * 2; // 基本スコア
 
-    // 位置の重み付け
+    // 位置の重み付け（7x7ボード用）
     const weights = [
-        [100, -20, 10, 5, 5, 10, -20, 100],
-        [-20, -50, -2, -2, -2, -2, -50, -20],
-        [10, -2, 5, 1, 1, 5, -2, 10],
-        [5, -2, 1, 0, 0, 1, -2, 5],
-        [5, -2, 1, 0, 0, 1, -2, 5],
-        [10, -2, 5, 1, 1, 5, -2, 10],
-        [-20, -50, -2, -2, -2, -2, -50, -20],
-        [100, -20, 10, 5, 5, 10, -20, 100],
+        [120, -20, 20, 5, 20, -20, 120],
+        [-20, -40, -5, -5, -5, -40, -20],
+        [20, -5, 15, 3, 15, -5, 20],
+        [5, -5, 3, 0, 3, -5, 5],
+        [20, -5, 15, 3, 15, -5, 20],
+        [-20, -40, -5, -5, -5, -40, -20],
+        [120, -20, 20, 5, 20, -20, 120],
     ];
 
     for (let r = 0; r < BOARD_SIZE; r++) {
@@ -214,8 +213,8 @@ export const getAIMoveLogic = (currentBoard, color, difficulty, playerTurnPositi
         const isCorner = (move.row === 0 || move.row === BOARD_SIZE - 1) && (move.col === 0 || move.col === BOARD_SIZE - 1);
         if (isCorner) score += 5;
 
-        // ランダム性を大幅に増やして弱くする（0.5 → 2.0）
-        score += Math.random() * 2.0;
+        // ランダム性でゆらぎを加える
+        score += Math.random() * 1.0;
 
         if (score > bestScore) {
             bestScore = score;
