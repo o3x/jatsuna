@@ -13,7 +13,7 @@
 
 import { getValidMoves, makeMoveSimulation, calculateScores } from '../src/utils/gameRules.js';
 import { getAIMoveLogic } from '../src/utils/aiLogic.js';
-import { PLAYERS, BOARD_SIZE } from '../src/utils/constants.js';
+import { PLAYERS, BOARD_SIZE, JATSUNA_CONFIG, COLOR_TRANSFORM, DIRECTIONS } from '../src/utils/constants.js';
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 
 // === 設定 ===
@@ -21,14 +21,14 @@ const SIMULATION_COUNT = 3000;
 
 // Top-K ソフトマックス選択
 // 実際のAIで全候補手を評価 → 上位K手からランダムに選択（強い手ほど選ばれやすい）
-const getAIMoveWithTopK = (board, color, difficulty, playerTurnPosition, topK = 3, temperature = 0.5) => {
-    const moves = getValidMoves(board, color);
+const getAIMoveWithTopK = (board, color, difficulty, playerTurnPosition, topK = 3, temperature = 0.5, config = JATSUNA_CONFIG) => {
+    const moves = getValidMoves(board, color, config);
     if (moves.length === 0) return null;
     if (moves.length === 1) return moves[0];
 
     // 実際のAIで各手を評価
     const evaluatedMoves = moves.map(move => {
-        const simBoard = makeMoveSimulation(board, move.row, move.col, color, move.captures);
+        const simBoard = makeMoveSimulation(board, move.row, move.col, color, move.captures, config);
         const scores = calculateScores(simBoard);
         // キャプチャ数 + 自分のスコア向上 を評価
         return {
@@ -58,20 +58,20 @@ const getAIMoveWithTopK = (board, color, difficulty, playerTurnPosition, topK = 
 };
 
 // AIの手を取得（難易度に応じて実際のAIまたはTop-K選択を使用）
-const getSimulationMove = (board, color, mode, playerTurnPosition) => {
+const getSimulationMove = (board, color, mode, playerTurnPosition, config = JATSUNA_CONFIG) => {
     if (mode === 'actual_superhard') {
         // 実際のSuperHard AI（決定論的）
-        return getAIMoveLogic(board, color, 'superhard', playerTurnPosition);
+        return getAIMoveLogic(board, color, 'superhard', playerTurnPosition, config);
     } else if (mode === 'actual_hard') {
-        return getAIMoveLogic(board, color, 'hard', playerTurnPosition);
+        return getAIMoveLogic(board, color, 'hard', playerTurnPosition, config);
     } else if (mode === 'topk_soft') {
         // Top-K ソフトマックス（temperature=0.5, 上位3手）
-        return getAIMoveWithTopK(board, color, 'superhard', playerTurnPosition, 3, 0.5);
+        return getAIMoveWithTopK(board, color, 'superhard', playerTurnPosition, 3, 0.5, config);
     } else if (mode === 'topk_hard') {
         // Top-K ソフトマックス（temperature=0.2, 上位2手 → より決定論寄り）
-        return getAIMoveWithTopK(board, color, 'superhard', playerTurnPosition, 2, 0.2);
+        return getAIMoveWithTopK(board, color, 'superhard', playerTurnPosition, 2, 0.2, config);
     }
-    return getAIMoveLogic(board, color, 'superhard', playerTurnPosition);
+    return getAIMoveLogic(board, color, 'superhard', playerTurnPosition, config);
 };
 
 // === テスト条件 ===
@@ -163,16 +163,16 @@ const runGame = (initialBoard, turnOrder, aiMode) => {
 
     while (consecutivePasses < 3 && turnCount < 200) {
         const color = turnOrder[currentIndex];
-        const moves = getValidMoves(board, color);
+        const moves = getValidMoves(board, color, JATSUNA_CONFIG);
 
         if (moves.length === 0) {
             consecutivePasses++;
             passCounts[color]++;
         } else {
             consecutivePasses = 0;
-            const move = getSimulationMove(board, color, aiMode, 0);
+            const move = getSimulationMove(board, color, aiMode, 0, JATSUNA_CONFIG);
             if (move) {
-                board = makeMoveSimulation(board, move.row, move.col, color, move.captures);
+                board = makeMoveSimulation(board, move.row, move.col, color, move.captures, JATSUNA_CONFIG);
                 moveCounts[color]++;
             }
         }

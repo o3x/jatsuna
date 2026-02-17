@@ -1,11 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
-import { PLAYERS } from '../utils/constants';
+import { PLAYERS, JATSUNA_CONFIG } from '../utils/constants';
 import { createInitialBoard, getValidMoves, makeMoveSimulation, calculateScores } from '../utils/gameRules';
 import { useAI } from './useAI';
 import { useAudio } from './useAudio';
 
 export const useGameLogic = (difficulty, soundEnabled, playerTurnPosition, gameStarted, setGameStarted) => {
-    const [board, setBoard] = useState(createInitialBoard);
+    const [board, setBoard] = useState(() => createInitialBoard(JATSUNA_CONFIG));
     const [currentPlayer, setCurrentPlayer] = useState(0);
     const [scores, setScores] = useState({ O: 1, C: 1, P: 1 });
     const [gameOver, setGameOver] = useState(false);
@@ -21,7 +20,7 @@ export const useGameLogic = (difficulty, soundEnabled, playerTurnPosition, gameS
     const { getAIMove } = useAI(difficulty, playerTurnPosition);
 
     const makeMove = useCallback((board, row, col, color, captures) => {
-        const newBoard = makeMoveSimulation(board, row, col, color, captures);
+        const newBoard = makeMoveSimulation(board, row, col, color, captures, JATSUNA_CONFIG);
         const cellsToAnimate = new Set([`${row}-${col}`]);
         for (const [r, c] of captures) {
             cellsToAnimate.add(`${r}-${c}`);
@@ -72,7 +71,7 @@ export const useGameLogic = (difficulty, soundEnabled, playerTurnPosition, gameS
         if (!gameStarted || gameOver) return;
 
         const color = PLAYERS[currentPlayer];
-        const moves = getValidMoves(board, color);
+        const moves = getValidMoves(board, color, JATSUNA_CONFIG);
         setValidMoves(moves);
         setScores(calculateScores(board));
 
@@ -120,7 +119,7 @@ export const useGameLogic = (difficulty, soundEnabled, playerTurnPosition, gameS
         setTurnCount(0);
         setFinalRanking(null);
         setLastMove(null);
-        setBoard(createInitialBoard());
+        setBoard(createInitialBoard(JATSUNA_CONFIG));
         setCurrentPlayer(0);
         setScores({ O: 1, C: 1, P: 1 });
         setValidMoves([]);

@@ -15,9 +15,16 @@ import { useTutorial } from './hooks/useTutorial';
 function App() {
     const [difficulty, setDifficulty] = useState('medium');
     const [soundEnabled, setSoundEnabled] = useState(true);
+    const [barrierFreeMode, setBarrierFreeMode] = useState(() => {
+        return localStorage.getItem('jatsuna_barrier_free') === 'true';
+    });
     const [showRoulette, setShowRoulette] = useState(false);
     const [playerTurnPosition, setPlayerTurnPosition] = useState(0);
     const [gameStarted, setGameStarted] = useState(false);
+
+    useEffect(() => {
+        localStorage.setItem('jatsuna_barrier_free', barrierFreeMode);
+    }, [barrierFreeMode]);
 
     const {
         board, scores, gameOver, currentPlayer, validMoves, lastMove, animatingCells,
@@ -79,6 +86,8 @@ function App() {
                         <GameControls
                             difficulty={difficulty}
                             setDifficulty={setDifficulty}
+                            barrierFreeMode={barrierFreeMode}
+                            setBarrierFreeMode={setBarrierFreeMode}
                             onStartGame={startGame}
                             initAudioContext={initAudioContext}
                         />
@@ -124,7 +133,8 @@ function App() {
                             animatingCells={animatingCells}
                             onCellClick={handleCellClick}
                             gameOver={gameOver}
-                            showIcons={false}
+                            showIcons={barrierFreeMode}
+                            barrierFreeMode={barrierFreeMode}
                             isPlayerTurn={currentPlayer === playerTurnPosition && !aiThinking && gameStarted && !gameOver}
                         />
 

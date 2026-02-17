@@ -1,9 +1,10 @@
 // 蛇突奈 (Jatsuna) - ゲーム設定コンポーネント
-// Last Updated: Mon Feb 17 18:45:00 JST 2026
-// Version: 6.5.0
+// Last Updated: Tue Feb 18 20:05:00 JST 2026
+// Version: 6.7.0
 
 const GameControls = ({
     difficulty, setDifficulty,
+    barrierFreeMode, setBarrierFreeMode,
     onStartGame, initAudioContext
 }) => {
     return (
@@ -30,6 +31,21 @@ const GameControls = ({
                             {id === 'collusion' && <div className="text-[10px] text-red-200">結託モード</div>}
                         </button>
                     ))}
+                </div>
+            </div>
+
+            <div className="mb-4 grid grid-cols-1 gap-2">
+                <div className="flex items-center justify-between bg-slate-600/50 p-2 rounded-md border border-slate-500/30">
+                    <span className="text-gray-300 text-xs font-bold">バリアフリー設定</span>
+                    <button
+                        onClick={() => setBarrierFreeMode(!barrierFreeMode)}
+                        className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${barrierFreeMode
+                            ? 'bg-blue-600 text-white border-blue-400 shadow-[0_0_10px_rgba(37,99,235,0.4)]'
+                            : 'bg-slate-700 text-gray-400 border-slate-500'
+                            } border`}
+                    >
+                        {barrierFreeMode ? 'ON (高判別)' : 'OFF (標準)'}
+                    </button>
                 </div>
             </div>
 
