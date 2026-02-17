@@ -1,5 +1,19 @@
 # Changelog
  
+## [6.3.5]
+**日時**: Mon Feb 17 17:39:00 JST 2026  
+**変更内容**:
+
+### Fixed
+- **ゲーム終了サウンド修正**: `Ranking.jsx` に `playOrchestraSound` が渡されていなかったため、ゲーム終了時の順位サウンド（ファンファーレ等）が再生されない問題を修正しました。
+
+### Changed
+- **著作権年の更新**: `© 2025` → `© 2025-2026` に更新しました。
+- **バージョン同期**: `package.json` のバージョンを `CHANGELOG.md` と同期しました。
+
+### Removed
+- **不要ファイルの削除**: Lint実行結果ファイル (`lint.txt`, `lint_compact.txt`, `components_lint.txt`) をリポジトリから削除しました。
+
 ## [6.3.4]
 **日時**: Sun Feb 08 18:46:00 JST 2026
 **変更内容**:

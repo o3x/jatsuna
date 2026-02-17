@@ -1,5 +1,5 @@
 // 蛇突奈 (Jatsuna) React Version
-// Last Updated: 2026-02-08
+// Last Updated: 2026-02-17
 
 import { useState, useRef, useEffect } from 'react';
 import Board from './components/Board';
@@ -63,9 +63,9 @@ function App() {
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
                         蛇突奈 <span className="text-2xl md:text-3xl text-gray-400">(Jatsuna)</span>
                     </h1>
-                    <p className="text-gray-400 text-xs">Version 6.3.4</p>
+                    <p className="text-gray-400 text-xs">Version 6.3.5</p>
                     <p className="text-gray-500 text-xs mt-1">
-                        © 2025 OHYAMA, Yoshihisa (o3x) | Developed with Claude.ai, Gemini & Antigravity
+                        © 2025-2026 OHYAMA, Yoshihisa (o3x) | Developed with Claude.ai, Gemini & Antigravity
 
                     </p>
                 </div>
@@ -113,7 +113,7 @@ function App() {
                             <div ref={rankingRef}>
                                 <Ranking
                                     ranking={finalRanking}
-                                    playerTurnPosition={playerTurnPosition}
+                                    playOrchestraSound={playOrchestraSound}
                                     onReset={() => setGameStarted(false)}
                                 />
                             </div>
