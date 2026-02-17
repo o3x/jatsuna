@@ -116,7 +116,7 @@ function App() {
 
                         <div className="text-center">
                             <p className="text-slate-600 text-[9px]">
-                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v7.0.0
+                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v7.1.0
                             </p>
                         </div>
                     </div>

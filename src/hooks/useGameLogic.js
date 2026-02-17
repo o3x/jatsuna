@@ -84,19 +84,38 @@ export const useGameLogic = (difficulty, soundEnabled, playerTurnPosition, gameS
                 const ranking = calculateRanking();
                 setFinalRanking(ranking);
 
-                // 戦績記録
+                // 戦績記録 (難易度別 + 全体)
                 const playerResult = ranking.find(r => r.isPlayer);
                 if (playerResult) {
                     const statsKey = 'jatsuna_stats';
-                    const currentStats = JSON.parse(localStorage.getItem(statsKey)) || {
-                        totalGames: 0,
-                        ranks: { 1: 0, 2: 0, 3: 0 },
-                        bestScore: 0
+                    const saved = localStorage.getItem(statsKey);
+                    let currentStats = {};
+
+                    try {
+                        const parsed = JSON.parse(saved) || {};
+                        // 古い形式（難易度別の階層がない）を検知して移行
+                        if (parsed.totalGames !== undefined && parsed.all === undefined) {
+                            currentStats = { all: parsed };
+                        } else {
+                            currentStats = parsed;
+                        }
+                    } catch (e) {
+                        currentStats = {};
+                    }
+
+                    const updateModeStats = (mode) => {
+                        if (!currentStats[mode]) {
+                            currentStats[mode] = { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 };
+                        }
+                        const s = currentStats[mode];
+                        s.totalGames += 1;
+                        s.ranks[playerResult.rank] = (s.ranks[playerResult.rank] || 0) + 1;
+                        s.bestScore = Math.max(s.bestScore || 0, playerResult.score);
                     };
 
-                    currentStats.totalGames += 1;
-                    currentStats.ranks[playerResult.rank] = (currentStats.ranks[playerResult.rank] || 0) + 1;
-                    currentStats.bestScore = Math.max(currentStats.bestScore, playerResult.score);
+                    // 特定難易度と全体の2か所を更新
+                    updateModeStats(difficulty);
+                    updateModeStats('all');
 
                     localStorage.setItem(statsKey, JSON.stringify(currentStats));
                 }
