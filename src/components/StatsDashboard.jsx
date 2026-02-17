@@ -5,44 +5,26 @@ const StatsDashboard = ({ isOpen, onClose, stats }) => {
 
     if (!isOpen) return null;
 
-    // 現在のタブに応じた統計を抽出
-    const currentStats = useMemo(() => {
-        if (!stats) return { totalGames: 0, ranks: {}, bestScore: 0 };
+    // ヘルパー: 表示する値を確実に文字列にする(Reactクラッシュ防止)
+    const safeStr = (v) => {
+        if (v === null || v === undefined) return '';
+        if (typeof v === 'object' || typeof v === 'function') return '-';
+        return String(v);
+    };
 
-        // 階層化されていない古い形式データへの対応
-        if (stats.totalGames !== undefined && stats.all === undefined) {
-            return activeTab === 'all' ? stats : { totalGames: 0, ranks: {}, bestScore: 0 };
-        }
-
-        return stats[activeTab] || { totalGames: 0, ranks: {}, bestScore: 0 };
-    }, [stats, activeTab]);
+    // 現在のタブの生データを抽出
+    const rawData = stats && stats[activeTab] ? stats[activeTab] : (stats?.totalGames !== undefined && activeTab === 'all' ? stats : null);
 
     // 統計計算
-    const calculatedStats = useMemo(() => {
-        if (!currentStats || typeof currentStats !== 'object') {
-            return { avgRank: '-', topRate: 0, winDistribution: [0, 0, 0], total: 0 };
-        }
+    const total = Number(rawData?.totalGames || 0);
+    const ranks = rawData?.ranks || {};
+    const first = Number(ranks[1] || 0);
+    const second = Number(ranks[2] || 0);
+    const third = Number(ranks[3] || 0);
+    const best = Number(rawData?.bestScore || 0);
 
-        const total = currentStats.totalGames || 0;
-        if (total === 0) {
-            return { avgRank: '-', topRate: 0, winDistribution: [0, 0, 0], total: 0 };
-        }
-
-        const ranks = currentStats.ranks || {};
-        const first = Number(ranks[1] || 0);
-        const second = Number(ranks[2] || 0);
-        const third = Number(ranks[3] || 0);
-
-        const avgRank = ((first * 1 + second * 2 + third * 3) / total).toFixed(2);
-        const topRate = ((first / total) * 100).toFixed(1);
-
-        return {
-            avgRank,
-            topRate,
-            winDistribution: [first, second, third],
-            total
-        };
-    }, [currentStats]);
+    const avgRank = total > 0 ? ((first * 1 + second * 2 + third * 3) / total).toFixed(2) : '-';
+    const topRate = total > 0 ? ((first / total) * 100).toFixed(1) : '0.0';
 
     const tabs = [
         { id: 'all', label: '全体' },
@@ -54,112 +36,81 @@ const StatsDashboard = ({ isOpen, onClose, stats }) => {
     ];
 
     return (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 animate-fade-in-up">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80">
+            <div className="absolute inset-0" onClick={onClose} />
 
-            <div className="premium-card w-full max-w-md p-6 relative overflow-hidden flex flex-col max-h-[90vh]">
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl font-inter" />
-
-                <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-2xl font-black text-white flex items-center gap-3">
-                        <span className="text-3xl">📊</span> プレイヤー戦績
+            <div className="premium-card w-full max-w-md p-6 relative flex flex-col bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl max-h-[90vh]">
+                <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-4">
+                    <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                        <span>📊</span> プレイヤー戦績
                     </h2>
-                    <button
-                        onClick={onClose}
-                        className="text-gray-400 hover:text-white transition-colors"
-                    >
-                        ✕
-                    </button>
+                    <button onClick={onClose} className="text-gray-500 hover:text-white text-2xl px-2">✕</button>
                 </div>
 
-                {/* タブセレクター */}
-                <div className="flex gap-1 bg-slate-800/80 p-1 rounded-xl mb-6 overflow-x-auto no-scrollbar border border-slate-700/50">
+                {/* タブ */}
+                <div className="flex gap-1 bg-slate-800 p-1 rounded-lg mb-6 overflow-x-auto">
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-black transition-all whitespace-nowrap flex-shrink-0
-                                ${activeTab === tab.id
-                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40'
-                                    : 'text-gray-500 hover:text-gray-300'}`}
+                            className={`px-3 py-2 rounded-md text-[10px] font-bold whitespace-nowrap flex-1
+                                ${activeTab === tab.id ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-gray-200'}`}
                         >
-                            {tab.label}
+                            {safeStr(tab.label)}
                         </button>
                     ))}
                 </div>
 
-                <div className="flex-1 overflow-y-auto no-scrollbar pr-1">
-                    {calculatedStats.total > 0 ? (
-                        <div className="space-y-8 animate-fade-in-up">
-                            {/* メイン KPI */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/50 text-center">
-                                    <div className="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1">平均順位</div>
-                                    <div className="text-3xl font-black font-inter text-blue-400">{calculatedStats.avgRank}</div>
+                <div className="flex-1 overflow-y-auto">
+                    {total > 0 ? (
+                        <div className="space-y-6">
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="bg-slate-800 p-4 rounded-xl text-center">
+                                    <div className="text-gray-500 text-[10px] mb-1">平均順位</div>
+                                    <div className="text-2xl font-black text-blue-400">{safeStr(avgRank)}</div>
                                 </div>
-                                <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/50 text-center">
-                                    <div className="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1">トップ(1位)率</div>
-                                    <div className="text-3xl font-black font-inter text-emerald-400">{calculatedStats.topRate}%</div>
+                                <div className="bg-slate-800 p-4 rounded-xl text-center">
+                                    <div className="text-gray-500 text-[10px] mb-1">1位率</div>
+                                    <div className="text-2xl font-black text-emerald-400">{safeStr(topRate)}%</div>
                                 </div>
                             </div>
 
-                            {/* 順位分布グラフ */}
-                            <div>
-                                <div className="text-gray-400 text-xs font-bold mb-4 flex justify-between">
-                                    <span>順位分布</span>
-                                    <span>{calculatedStats.total} Games</span>
-                                </div>
-                                <div className="space-y-4">
-                                    {[1, 2, 3].map((rank, i) => {
-                                        const count = calculatedStats.winDistribution[i];
-                                        const percentage = ((count / calculatedStats.total) * 100).toFixed(0);
-                                        const colors = [
-                                            'from-yellow-400 to-yellow-600',
-                                            'from-slate-300 to-slate-500',
-                                            'from-orange-500 to-orange-700'
-                                        ];
-
-                                        return (
-                                            <div key={rank} className="relative">
-                                                <div className="flex items-center justify-between text-[10px] font-bold text-gray-400 mb-1 px-1">
-                                                    <span>{rank === 1 ? '🥇 1位 (Win)' : rank === 2 ? '🥈 2位' : '🥉 3位'}</span>
-                                                    <span className="font-inter">{count}回 ({percentage}%)</span>
-                                                </div>
-                                                <div className="h-3 bg-slate-950 rounded-full overflow-hidden border border-slate-800 shadow-inner">
-                                                    <div
-                                                        className={`h-full bg-gradient-to-r ${colors[i]} transition-all duration-1000 ease-out`}
-                                                        style={{ width: `${percentage}%` }}
-                                                    />
-                                                </div>
+                            <div className="space-y-4 pt-4">
+                                {[1, 2, 3].map((r) => {
+                                    const count = r === 1 ? first : r === 2 ? second : third;
+                                    const pct = total > 0 ? ((count / total) * 100).toFixed(0) : 0;
+                                    return (
+                                        <div key={r}>
+                                            <div className="flex justify-between text-[10px] text-gray-400 mb-1">
+                                                <span>{r}位</span>
+                                                <span>{safeStr(count)}回 ({safeStr(pct)}%)</span>
                                             </div>
-                                        );
-                                    })}
-                                </div>
+                                            <div className="h-2 bg-slate-800 rounded-full">
+                                                <div className="h-full bg-blue-500 rounded-full" style={{ width: `${pct}%` }} />
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
 
-                            {/* 自己ベスト */}
-                            <div className="pt-4 border-t border-slate-700/50 flex justify-between items-center text-[10px] text-gray-500">
-                                <div>モード別最高: <span className="text-white font-bold">{currentStats.bestScore || 0}</span></div>
-                                <div className="font-inter uppercase">Mode: {activeTab}</div>
+                            <div className="pt-6 mt-6 border-t border-slate-800 text-center">
+                                <span className="text-gray-500 text-[10px] uppercase tracking-wider">Mode Best: {safeStr(best)} Stones</span>
                             </div>
                         </div>
                     ) : (
-                        <div className="py-12 text-center bg-slate-800/30 rounded-3xl border border-dashed border-slate-700/50">
-                            <div className="text-5xl mb-4 grayscale opacity-20">📊</div>
-                            <p className="text-gray-400 text-sm font-bold">
-                                {activeTab === 'all' ? 'まだデータがありません' : `${activeTab.toUpperCase()} モードの記録はありません`}
-                            </p>
-                            <p className="text-gray-600 text-[10px] mt-2">ゲームをプレイして記録を刻みましょう！</p>
+                        <div className="py-20 text-center text-gray-500">
+                            <div className="text-4xl mb-4 opacity-20">📊</div>
+                            <p className="text-sm font-bold">まだデータがありません</p>
                         </div>
                     )}
                 </div>
 
-                <div className="mt-8">
+                <div className="mt-6">
                     <button
                         onClick={onClose}
-                        className="w-full py-4 bg-white text-slate-900 font-black rounded-2xl hover:bg-slate-100 transition-all shadow-xl active:scale-95"
+                        className="w-full py-3 bg-white text-slate-900 font-bold rounded-xl active:scale-95 transition-transform"
                     >
-                        ダッシュボードを閉じる
+                        閉じる
                     </button>
                 </div>
             </div>

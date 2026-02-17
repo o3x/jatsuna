@@ -35,36 +35,38 @@ function App() {
         localStorage.setItem('jatsuna_anim_speed', animationSpeed);
     }, [difficulty, soundEnabled, barrierFreeMode, animationSpeed]);
 
-    // 戦績データの読み込みと正規化（マイグレーション）
-    const fetchStats = () => {
+    // 戦績データの読み込み・正規化・マイグレーション (v7.1.5)
+    useEffect(() => {
+        if (!isStatsOpen && !gameStarted) return; // 必要ない時は走らせない
+
+        const defaultStats = { all: { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 } };
         try {
             const saved = localStorage.getItem('jatsuna_stats');
-            const defaultStats = { all: { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 } };
-
-            if (saved) {
+            if (!saved) {
+                setStats(defaultStats);
+            } else {
                 const parsed = JSON.parse(saved);
-                if (parsed && typeof parsed === 'object') {
-                    // 旧形式（階層なし）から新形式（階層あり）への自動移行
-                    if (parsed.totalGames !== undefined && parsed.all === undefined) {
-                        setStats({ all: parsed, ...parsed }); // 安全のため両対応しつつセット
-                    } else {
-                        // 形式が正しい場合も、'all' がない場合は補完
-                        if (!parsed.all) parsed.all = { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 };
-                        setStats(parsed);
-                    }
-                    return;
+                if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+                    setStats(defaultStats);
+                } else if (parsed.totalGames !== undefined && parsed.all === undefined) {
+                    setStats({
+                        all: {
+                            totalGames: parsed.totalGames || 0,
+                            ranks: parsed.ranks || { 1: 0, 2: 0, 3: 0 },
+                            bestScore: parsed.bestScore || 0
+                        },
+                        ...parsed
+                    });
+                } else {
+                    if (!parsed.all) parsed.all = defaultStats.all;
+                    setStats(parsed);
                 }
             }
-            setStats(defaultStats);
         } catch (e) {
-            console.error('統計データの読み込みに失敗しました:', e);
-            setStats({ all: { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 } });
+            console.error('Stats fetch error:', e);
+            setStats(defaultStats);
         }
-    };
-
-    useEffect(() => {
-        fetchStats();
-    }, [gameStarted]); // ゲーム終了時などに更新されるよう
+    }, [isStatsOpen, gameStarted]);
 
     const {
         board, scores, gameOver, currentPlayer, validMoves, lastMove, animatingCells,
@@ -111,7 +113,7 @@ function App() {
     };
 
     return (
-        <div className="h-screen bg-gradient-to-br from-slate-900 via-slate-850 to-black flex items-center justify-center p-4 overflow-hidden font-['Zen_Kaku_Gothic_New',_sans-serif]">
+        <div className="h-screen bg-slate-900 flex items-center justify-center p-4 overflow-hidden">
             <div className="max-w-4xl w-full max-h-full overflow-y-auto custom-scrollbar animate-fade-in-up">
                 <div className="text-center mb-6">
                     <h1 className="text-5xl md:text-6xl font-black text-white mb-2 tracking-tighter">
@@ -133,14 +135,14 @@ function App() {
                             setDifficulty={setDifficulty}
                             onStartGame={startGame}
                             onOpenSettings={() => setIsSettingsOpen(true)}
-                            onOpenStats={() => { fetchStats(); setIsStatsOpen(true); }}
+                            onOpenStats={() => setIsStatsOpen(true)}
                             onOpenTutorial={startTutorial}
                             initAudioContext={initAudioContext}
                         />
 
                         <div className="text-center">
                             <p className="text-slate-600 text-[9px]">
-                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v7.1.3
+                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v7.1.5
                             </p>
                         </div>
                     </div>
