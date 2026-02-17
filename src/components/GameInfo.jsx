@@ -1,9 +1,11 @@
-// React import removed associated with unused variable lint warning
+// 蛇突奈 (Jatsuna) - ゲーム情報コンポーネント
+// Last Updated: Mon Feb 17 18:45:00 JST 2026
+// Version: 6.5.0
 import { PLAYERS, PLAYER_NAMES, PLAYER_SHAPES } from '../utils/constants';
 
 const GameInfo = ({
     difficulty, turnCount, scores, currentPlayer, playerTurnPosition,
-    aiThinking, thinkingDots, showIcons, onReset
+    aiThinking, thinkingDots, onReset
 }) => {
     const getStoneStyle = (color) => {
         const styles = {
@@ -60,11 +62,9 @@ const GameInfo = ({
                                     className={`w-8 h-8 ${style.shapeClass} flex-shrink-0`}
                                     style={{ background: style.background }}
                                 >
-                                    {showIcons && (
-                                        <div className="stone-icon text-lg">
-                                            {PLAYER_SHAPES[player]}
-                                        </div>
-                                    )}
+                                    <div className="stone-icon text-lg">
+                                        {PLAYER_SHAPES[player]}
+                                    </div>
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="text-white font-bold text-xs flex items-center gap-1">
