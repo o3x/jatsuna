@@ -24,7 +24,7 @@ function App() {
     // モーダル管理
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isStatsOpen, setIsStatsOpen] = useState(false);
-    const [stats, setStats] = useState({ totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 });
+    const [stats, setStats] = useState({ all: { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 } });
 
     // 設定変更時の保存
     useEffect(() => {
@@ -34,17 +34,27 @@ function App() {
         localStorage.setItem('jatsuna_anim_speed', animationSpeed);
     }, [difficulty, soundEnabled, barrierFreeMode, animationSpeed]);
 
-    // 戦績データの読み込み
+    // 戦績データの読み込み (マイグレーション機能付き)
     const fetchStats = () => {
         try {
             const saved = localStorage.getItem('jatsuna_stats');
             if (saved) {
                 const parsed = JSON.parse(saved);
-                setStats(parsed || { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 });
+                if (parsed && typeof parsed === 'object') {
+                    // 古い形式（階層なし）を検知して移行
+                    if (parsed.totalGames !== undefined && parsed.all === undefined) {
+                        setStats({ all: parsed });
+                    } else {
+                        setStats(parsed);
+                    }
+                    return;
+                }
             }
+            // データがないか不正な場合はデフォルト値
+            setStats({ all: { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 } });
         } catch (e) {
             console.error('統計データの読み込みに失敗しました:', e);
-            setStats({ totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 });
+            setStats({ all: { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 } });
         }
     };
 
@@ -124,7 +134,7 @@ function App() {
 
                         <div className="text-center">
                             <p className="text-slate-600 text-[9px]">
-                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v7.1.1
+                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v7.1.2
                             </p>
                         </div>
                     </div>
