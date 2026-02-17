@@ -1,5 +1,5 @@
 // gameRules.js - Jatsuna Core Logic (Decoupled version)
-// Last Updated: Tue Feb 18 20:25:00 JST 2026
+// Last Updated: Tue Feb 17 20:30:00 JST 2026
 // Version: 6.7.0
 
 
