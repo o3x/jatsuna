@@ -2,7 +2,7 @@
 import Cell from './Cell';
 import { BOARD_SIZE } from '../utils/constants';
 
-const Board = ({ board, validMoves, lastMove, animatingCells, showIcons, onCellClick, isPlayerTurn, barrierFreeMode }) => {
+const Board = ({ board, validMoves, lastMove, animatingCells, showIcons, onCellClick, isPlayerTurn, barrierFreeMode, animationSpeed }) => {
     return (
         <div className={`bg-slate-700 rounded-lg p-4 shadow-2xl transition-opacity duration-300 ${!isPlayerTurn ? 'opacity-50 pointer-events-none' : ''}`}>
             <div className="grid gap-1" style={{

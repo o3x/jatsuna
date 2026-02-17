@@ -116,7 +116,7 @@ function App() {
 
                         <div className="text-center">
                             <p className="text-slate-600 text-[9px]">
-                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v6.9.0
+                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v6.9.1
                             </p>
                         </div>
                     </div>
@@ -128,6 +128,7 @@ function App() {
                             scores={scores}
                             currentPlayer={currentPlayer}
                             playerTurnPosition={playerTurnPosition}
+                            aiThinking={aiThinking}
                             gameOver={gameOver}
                             onReset={backToMenu}
                             playOrchestraSound={playOrchestraSound}
