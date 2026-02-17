@@ -7,31 +7,34 @@ const StatsDashboard = ({ isOpen, onClose, stats }) => {
 
     // 現在のタブに応じた統計を抽出
     const currentStats = useMemo(() => {
-        // stats が空、または古い形式でネストされていない場合への対処
-        if (!stats) return null;
+        if (!stats) return { totalGames: 0, ranks: {}, bestScore: 0 };
 
-        // 階層化されていない古いデータが渡された場合、それ自体を all 扱いにする
+        // 階層化されていない古い形式データへの対応
         if (stats.totalGames !== undefined && stats.all === undefined) {
-            return activeTab === 'all' ? stats : null;
+            return activeTab === 'all' ? stats : { totalGames: 0, ranks: {}, bestScore: 0 };
         }
 
-        return stats[activeTab] || null;
+        return stats[activeTab] || { totalGames: 0, ranks: {}, bestScore: 0 };
     }, [stats, activeTab]);
 
     // 統計計算
     const calculatedStats = useMemo(() => {
-        if (!currentStats || (currentStats.totalGames || 0) === 0) {
+        if (!currentStats || typeof currentStats !== 'object') {
             return { avgRank: '-', topRate: 0, winDistribution: [0, 0, 0], total: 0 };
         }
 
         const total = currentStats.totalGames || 0;
-        const ranks = currentStats.ranks || {};
-        const first = ranks[1] || 0;
-        const second = ranks[2] || 0;
-        const third = ranks[3] || 0;
+        if (total === 0) {
+            return { avgRank: '-', topRate: 0, winDistribution: [0, 0, 0], total: 0 };
+        }
 
-        const avgRank = total > 0 ? ((first * 1 + second * 2 + third * 3) / total).toFixed(2) : '-';
-        const topRate = total > 0 ? ((first / total) * 100).toFixed(1) : '0.0';
+        const ranks = currentStats.ranks || {};
+        const first = Number(ranks[1] || 0);
+        const second = Number(ranks[2] || 0);
+        const third = Number(ranks[3] || 0);
+
+        const avgRank = ((first * 1 + second * 2 + third * 3) / total).toFixed(2);
+        const topRate = ((first / total) * 100).toFixed(1);
 
         return {
             avgRank,

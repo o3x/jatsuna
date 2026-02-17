@@ -24,6 +24,7 @@ function App() {
     // モーダル管理
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isStatsOpen, setIsStatsOpen] = useState(false);
+    // 初期値を新形式 (all キー) に固定
     const [stats, setStats] = useState({ all: { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 } });
 
     // 設定変更時の保存
@@ -34,24 +35,27 @@ function App() {
         localStorage.setItem('jatsuna_anim_speed', animationSpeed);
     }, [difficulty, soundEnabled, barrierFreeMode, animationSpeed]);
 
-    // 戦績データの読み込み (マイグレーション機能付き)
+    // 戦績データの読み込みと正規化（マイグレーション）
     const fetchStats = () => {
         try {
             const saved = localStorage.getItem('jatsuna_stats');
+            const defaultStats = { all: { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 } };
+
             if (saved) {
                 const parsed = JSON.parse(saved);
                 if (parsed && typeof parsed === 'object') {
-                    // 古い形式（階層なし）を検知して移行
+                    // 旧形式（階層なし）から新形式（階層あり）への自動移行
                     if (parsed.totalGames !== undefined && parsed.all === undefined) {
-                        setStats({ all: parsed });
+                        setStats({ all: parsed, ...parsed }); // 安全のため両対応しつつセット
                     } else {
+                        // 形式が正しい場合も、'all' がない場合は補完
+                        if (!parsed.all) parsed.all = { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 };
                         setStats(parsed);
                     }
                     return;
                 }
             }
-            // データがないか不正な場合はデフォルト値
-            setStats({ all: { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 } });
+            setStats(defaultStats);
         } catch (e) {
             console.error('統計データの読み込みに失敗しました:', e);
             setStats({ all: { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 } });
@@ -100,8 +104,10 @@ function App() {
     };
 
     const resetStats = () => {
-        localStorage.removeItem('jatsuna_stats');
-        setStats({ totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 });
+        if (window.confirm('これまでの戦績をリセットしてもよろしいですか？')) {
+            localStorage.removeItem('jatsuna_stats');
+            setStats({ all: { totalGames: 0, ranks: { 1: 0, 2: 0, 3: 0 }, bestScore: 0 } });
+        }
     };
 
     return (
@@ -134,7 +140,7 @@ function App() {
 
                         <div className="text-center">
                             <p className="text-slate-600 text-[9px]">
-                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v7.1.2
+                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v7.1.3
                             </p>
                         </div>
                     </div>
