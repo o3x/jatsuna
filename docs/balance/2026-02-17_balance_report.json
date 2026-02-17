@@ -1,0 +1,158 @@
+[
+  {
+    "meta": {
+      "conditionId": "baseline_no_wall",
+      "conditionName": "現行ルール（壁なし・Wide Triangle）",
+      "description": "v6.1.0以降の現行ルール。壁なし、自由配置あり。",
+      "timestamp": "2026-02-17T10:18:45.760Z",
+      "localTime": "2026/2/17 19:18:45",
+      "executor": "Antigravity AI (Claude) + OHYAMA Yoshihisa",
+      "difficulty": "superhard",
+      "simulationCount": 1000,
+      "boardSize": 7,
+      "elapsedSeconds": 63
+    },
+    "winRates": {
+      "O_orb": "0.0%",
+      "C_gem": "100.0%",
+      "P_stella": "0.0%",
+      "draws": "0.0%"
+    },
+    "winRatesByTurnOrder": {
+      "first_player": "0.0%",
+      "second_player": "100.0%",
+      "third_player": "0.0%"
+    },
+    "avgScores": {
+      "O_orb": "18.0",
+      "C_gem": "19.0",
+      "P_stella": "12.0"
+    },
+    "avgScoresByTurnOrder": {
+      "first_player": "18.0",
+      "second_player": "19.0",
+      "third_player": "12.0"
+    },
+    "avgMoves": {
+      "O_orb": "16.0",
+      "C_gem": "15.0",
+      "P_stella": "15.0"
+    },
+    "balanceMetrics": {
+      "winRateSpread": 100,
+      "scoreStdDev": "3.09",
+      "moveCountSpread": "1.0"
+    },
+    "rawStats": {
+      "wins": {
+        "O": 0,
+        "C": 1000,
+        "P": 0
+      },
+      "draws": 0,
+      "totalScores": {
+        "O": 18000,
+        "C": 19000,
+        "P": 12000
+      },
+      "totalMoves": {
+        "O": 16000,
+        "C": 15000,
+        "P": 15000
+      },
+      "totalPasses": {
+        "O": 1000,
+        "C": 1000,
+        "P": 1000
+      },
+      "winsByTurnOrder": {
+        "first": 0,
+        "second": 1000,
+        "third": 0
+      },
+      "scoresByTurnOrder": {
+        "first": 18000,
+        "second": 19000,
+        "third": 12000
+      }
+    }
+  },
+  {
+    "meta": {
+      "conditionId": "center_wall",
+      "conditionName": "中央壁あり（Wide Triangle + 壁）",
+      "description": "v4.1方式。中央(3,3)に壁(X)を追加。手番均等化（45÷3=15手）。",
+      "timestamp": "2026-02-17T10:19:42.419Z",
+      "localTime": "2026/2/17 19:19:42",
+      "executor": "Antigravity AI (Claude) + OHYAMA Yoshihisa",
+      "difficulty": "superhard",
+      "simulationCount": 1000,
+      "boardSize": 7,
+      "elapsedSeconds": 56.7
+    },
+    "winRates": {
+      "O_orb": "0.0%",
+      "C_gem": "0.0%",
+      "P_stella": "100.0%",
+      "draws": "0.0%"
+    },
+    "winRatesByTurnOrder": {
+      "first_player": "0.0%",
+      "second_player": "0.0%",
+      "third_player": "100.0%"
+    },
+    "avgScores": {
+      "O_orb": "12.0",
+      "C_gem": "12.0",
+      "P_stella": "24.0"
+    },
+    "avgScoresByTurnOrder": {
+      "first_player": "12.0",
+      "second_player": "12.0",
+      "third_player": "24.0"
+    },
+    "avgMoves": {
+      "O_orb": "15.0",
+      "C_gem": "15.0",
+      "P_stella": "15.0"
+    },
+    "balanceMetrics": {
+      "winRateSpread": 100,
+      "scoreStdDev": "5.66",
+      "moveCountSpread": "0.0"
+    },
+    "rawStats": {
+      "wins": {
+        "O": 0,
+        "C": 0,
+        "P": 1000
+      },
+      "draws": 0,
+      "totalScores": {
+        "O": 12000,
+        "C": 12000,
+        "P": 24000
+      },
+      "totalMoves": {
+        "O": 15000,
+        "C": 15000,
+        "P": 15000
+      },
+      "totalPasses": {
+        "O": 1000,
+        "C": 1000,
+        "P": 1000
+      },
+      "winsByTurnOrder": {
+        "first": 0,
+        "second": 0,
+        "third": 1000
+      },
+      "scoresByTurnOrder": {
+        "first": 12000,
+        "second": 12000,
+        "third": 24000
+      }
+    }
+  }
+]

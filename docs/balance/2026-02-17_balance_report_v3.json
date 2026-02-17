@@ -1,0 +1,168 @@
+[
+  {
+    "meta": {
+      "conditionId": "baseline_noise",
+      "conditionName": "現行ルール（壁なし）+ ノイズ15%",
+      "description": "v6.1.0現行。SuperHard+ノイズ15%で1000ゲーム。",
+      "timestamp": "2026-02-17T10:30:52.628Z",
+      "localTime": "2026/2/17 19:30:52",
+      "executor": "Antigravity AI (Claude) + OHYAMA Yoshihisa",
+      "noiseLevel": 0.15,
+      "simulationCount": 1000,
+      "boardSize": 7,
+      "turnOrderRotation": true,
+      "elapsedSeconds": 60.1
+    },
+    "colorWinRates": {
+      "O_orb": "32.9%",
+      "C_gem": "28.9%",
+      "P_stella": "32.8%",
+      "draws": "5.4%"
+    },
+    "turnOrderWinRates": {
+      "first_player": "50.3%",
+      "second_player": "12.7%",
+      "third_player": "31.6%"
+    },
+    "avgScoresByColor": {
+      "O_orb": "16.6",
+      "C_gem": "16.1",
+      "P_stella": "16.3"
+    },
+    "avgScoresByTurnOrder": {
+      "first_player": "18.7",
+      "second_player": "13.5",
+      "third_player": "16.8"
+    },
+    "avgMovesByColor": {
+      "O_orb": "15.3",
+      "C_gem": "15.3",
+      "P_stella": "15.3"
+    },
+    "avgMovesByTurnOrder": {
+      "first_player": "16.0",
+      "second_player": "15.0",
+      "third_player": "15.0"
+    },
+    "balanceMetrics": {
+      "colorWinRateSpread": "4.0%",
+      "turnOrderWinRateSpread": "37.6%"
+    },
+    "rawStats": {
+      "colorWins": {
+        "O": 329,
+        "C": 289,
+        "P": 328,
+        "draw": 54
+      },
+      "colorScores": {
+        "O": 16607,
+        "C": 16108,
+        "P": 16285
+      },
+      "colorMoves": {
+        "O": 15334,
+        "C": 15333,
+        "P": 15333
+      },
+      "turnOrderWins": {
+        "first": 503,
+        "second": 127,
+        "third": 316
+      },
+      "turnOrderScores": {
+        "first": 18656,
+        "second": 13543,
+        "third": 16801
+      },
+      "turnOrderMoves": {
+        "first": 16000,
+        "second": 15000,
+        "third": 15000
+      }
+    }
+  },
+  {
+    "meta": {
+      "conditionId": "wall_noise",
+      "conditionName": "中央壁あり + ノイズ15%",
+      "description": "v4.1方式。中央壁(X)追加。SuperHard+ノイズ15%。",
+      "timestamp": "2026-02-17T10:31:46.164Z",
+      "localTime": "2026/2/17 19:31:46",
+      "executor": "Antigravity AI (Claude) + OHYAMA Yoshihisa",
+      "noiseLevel": 0.15,
+      "simulationCount": 1000,
+      "boardSize": 7,
+      "turnOrderRotation": true,
+      "elapsedSeconds": 53.5
+    },
+    "colorWinRates": {
+      "O_orb": "30.6%",
+      "C_gem": "31.1%",
+      "P_stella": "30.6%",
+      "draws": "7.7%"
+    },
+    "turnOrderWinRates": {
+      "first_player": "30.6%",
+      "second_player": "22.7%",
+      "third_player": "39.0%"
+    },
+    "avgScoresByColor": {
+      "O_orb": "16.0",
+      "C_gem": "16.0",
+      "P_stella": "16.0"
+    },
+    "avgScoresByTurnOrder": {
+      "first_player": "16.1",
+      "second_player": "15.0",
+      "third_player": "16.8"
+    },
+    "avgMovesByColor": {
+      "O_orb": "15.0",
+      "C_gem": "15.0",
+      "P_stella": "15.0"
+    },
+    "avgMovesByTurnOrder": {
+      "first_player": "15.0",
+      "second_player": "15.0",
+      "third_player": "15.0"
+    },
+    "balanceMetrics": {
+      "colorWinRateSpread": "0.5%",
+      "turnOrderWinRateSpread": "16.3%"
+    },
+    "rawStats": {
+      "colorWins": {
+        "O": 306,
+        "C": 311,
+        "P": 306,
+        "draw": 77
+      },
+      "colorScores": {
+        "O": 16040,
+        "C": 16003,
+        "P": 15957
+      },
+      "colorMoves": {
+        "O": 15000,
+        "C": 15000,
+        "P": 15000
+      },
+      "turnOrderWins": {
+        "first": 306,
+        "second": 227,
+        "third": 390
+      },
+      "turnOrderScores": {
+        "first": 16145,
+        "second": 15013,
+        "third": 16842
+      },
+      "turnOrderMoves": {
+        "first": 15000,
+        "second": 15000,
+        "third": 15000
+      }
+    }
+  }
+]

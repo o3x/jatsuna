@@ -1,6 +1,6 @@
 // 蛇突奈 (Jatsuna) React Version
-// Last Updated: Mon Feb 17 19:01:00 JST 2026
-// Version: 6.5.1
+// Last Updated: Mon Feb 17 19:33:00 JST 2026
+// Version: 6.6.0
 
 import { useState, useRef, useEffect } from 'react';
 import Board from './components/Board';
@@ -66,7 +66,7 @@ function App() {
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
                         蛇突奈 <span className="text-2xl md:text-3xl text-gray-400">(Jatsuna)</span>
                     </h1>
-                    <p className="text-gray-400 text-xs">Version 6.5.1</p>
+                    <p className="text-gray-400 text-xs">Version 6.6.0</p>
                     <p className="text-gray-500 text-xs mt-1">
                         © 2025-2026 OHYAMA, Yoshihisa (o3x) | Developed with Claude.ai, Gemini & Antigravity
                     </p>

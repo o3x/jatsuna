@@ -2,10 +2,12 @@ import { BOARD_SIZE, COLOR_TRANSFORM, DIRECTIONS } from './constants.js';
 
 export const createInitialBoard = () => {
     const board = Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(null));
-    // ワイドトライアングル配置（バランス型）
+    // ワイドトライアングル配置 + 中央壁（バランス検証v3に基づく）
+    // 壁なし: 1番手勝率50.3%（不均衡） → 壁あり: 手番勝率差16.3%（大幅改善）
     board[2][3] = 'O';
     board[4][5] = 'C';
     board[5][2] = 'P';
+    board[3][3] = 'X';  // 中央壁: 有効45マス÷3=全員15手で均等
     return board;
 };
 
