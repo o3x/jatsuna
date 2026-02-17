@@ -132,42 +132,56 @@ const evaluateBoard = (board, myColor, config) => {
     return score;
 };
 
-// 通常モードの探索（1手読み + 評価関数）
-const getBestMoveWithLookahead = (board, color, config) => {
+// 通常モードの探索（Minimax 深度指定版）
+const getMinimaxMove = (board, depth, color, config) => {
     const { players } = config;
+
+    // 相手プレイヤーの特定（3プレイヤー制なので簡易的に「次の人」と「その次の人」を考慮）
+    const getNextPlayer = (p) => players[(players.indexOf(p) + 1) % 3];
+
+    const minimax = (currentBoard, d, currentPlayer, alpha, beta) => {
+        if (d === 0) return evaluateBoard(currentBoard, color, config);
+
+        const moves = getValidMoves(currentBoard, currentPlayer, config);
+        if (moves.length === 0) {
+            // パスの場合、次のプレイヤーへ
+            return minimax(currentBoard, d - 1, getNextPlayer(currentPlayer), alpha, beta);
+        }
+
+        if (currentPlayer === color) {
+            let maxEval = -Infinity;
+            for (const move of moves.slice(0, 8)) { // 探索幅制限
+                const newBoard = makeMoveSimulation(currentBoard, move.row, move.col, currentPlayer, move.captures, config);
+                const evaluation = minimax(newBoard, d - 1, getNextPlayer(currentPlayer), alpha, beta);
+                maxEval = Math.max(maxEval, evaluation);
+                alpha = Math.max(alpha, evaluation);
+                if (beta <= alpha) break;
+            }
+            return maxEval;
+        } else {
+            let minEval = Infinity;
+            for (const move of moves.slice(0, 8)) {
+                const newBoard = makeMoveSimulation(currentBoard, move.row, move.col, currentPlayer, move.captures, config);
+                const evaluation = minimax(newBoard, d - 1, getNextPlayer(currentPlayer), alpha, beta);
+                minEval = Math.min(minEval, evaluation);
+                beta = Math.min(beta, evaluation);
+                if (beta <= alpha) break;
+            }
+            return minEval;
+        }
+    };
+
     const moves = getValidMoves(board, color, config);
     if (moves.length === 0) return null;
 
-    let bestScore = -Infinity;
     let bestMove = moves[0];
+    let bestScore = -Infinity;
 
     for (const move of moves) {
-        // 自分の手をシミュレーション
-        const simBoard = makeMoveSimulation(board, move.row, move.col, color, move.captures, config);
-
-        // 次のプレイヤー（敵）の最善手を予測して減点する（MinMaxの簡易版）
-        const nextPlayer = players[(players.indexOf(color) + 1) % 3];
-        const nextMoves = getValidMoves(simBoard, nextPlayer, config);
-
-        let maxEnemyScore = -Infinity;
-        if (nextMoves.length > 0) {
-            // 敵は自分の評価値を最大化する手を打つと仮定
-            for (const enemyMove of nextMoves) {
-                const enemySimBoard = makeMoveSimulation(simBoard, enemyMove.row, enemyMove.col, nextPlayer, enemyMove.captures, config);
-                const enemyScore = evaluateBoard(enemySimBoard, nextPlayer, config);
-                if (enemyScore > maxEnemyScore) {
-                    maxEnemyScore = enemyScore;
-                }
-            }
-        } else {
-            maxEnemyScore = 0; // 敵が打てないならラッキー
-        }
-
-        // 自分の盤面評価 - 敵の最大獲得評価
-        const currentScore = evaluateBoard(simBoard, color, config) - (maxEnemyScore * 0.5);
-
-        if (currentScore > bestScore) {
-            bestScore = currentScore;
+        const newBoard = makeMoveSimulation(board, move.row, move.col, color, move.captures, config);
+        const score = minimax(newBoard, depth - 1, getNextPlayer(color), -Infinity, Infinity);
+        if (score > bestScore) {
+            bestScore = score;
             bestMove = move;
         }
     }
@@ -179,29 +193,28 @@ export const getAIMoveLogic = (currentBoard, color, difficulty, playerTurnPositi
     const moves = getValidMoves(currentBoard, color, config);
     if (moves.length === 0) return null;
 
-    // Easy: 完全ランダム
-    if (difficulty === 'easy') return moves[Math.floor(Math.random() * moves.length)];
-
-    // Collusion: 最凶結託モード
-    if (difficulty === 'collusion') {
-        const playerColor = players[playerTurnPosition];
-        const depth = 4;
-        const { move } = minimaxCollusion(currentBoard, depth, color, color, playerColor, -Infinity, Infinity, config);
-        return move;
+    // Easy: 接待モード（わざと弱い手を選ぶ）
+    if (difficulty === 'easy') {
+        // 獲得数が最小で、かつ角を避ける手を探す
+        const sortedMoves = moves.sort((a, b) => {
+            const isACorner = (a.row === 0 || a.row === 6) && (a.col === 0 || a.col === 6);
+            const isBCorner = (b.row === 0 || b.row === 6) && (b.col === 0 || b.col === 6);
+            if (isACorner && !isBCorner) return 1;
+            if (!isACorner && isBCorner) return -1;
+            return a.captures.length - b.captures.length;
+        });
+        // 80%の確率で最弱の手、20%でランダム（人間味）
+        return Math.random() < 0.8 ? sortedMoves[0] : moves[Math.floor(Math.random() * moves.length)];
     }
 
-    // SuperHard: 1手読み + 高度な評価関数
-    if (difficulty === 'superhard') {
-        return getBestMoveWithLookahead(currentBoard, color, config);
-    }
-
-    // Hard: 位置評価重視
-    if (difficulty === 'hard') {
-        let bestScore = -Infinity;
-        let bestMove = moves[0];
+    // Medium: 獲得数重視（現行のスタンダード）
+    if (difficulty === 'medium') {
+        let bestMove = moves[0], bestScore = -1;
         for (const move of moves) {
-            const simBoard = makeMoveSimulation(currentBoard, move.row, move.col, color, move.captures, config);
-            const score = evaluateBoard(simBoard, color, config);
+            let score = move.captures.length;
+            const isCorner = (move.row === 0 || move.row === 6) && (move.col === 0 || move.col === 6);
+            if (isCorner) score += 10;
+            score += Math.random() * 0.5;
             if (score > bestScore) {
                 bestScore = score;
                 bestMove = move;
@@ -210,22 +223,23 @@ export const getAIMoveLogic = (currentBoard, color, difficulty, playerTurnPositi
         return bestMove;
     }
 
-    // Medium: 獲得数重視（貪欲法）
-    let bestMove = moves[0], bestScore = -1;
-    const boardSize = currentBoard.length;
-    for (const move of moves) {
-        let score = move.captures.length;
-        // 角だけは優先する
-        const isCorner = (move.row === 0 || move.row === boardSize - 1) && (move.col === 0 || move.col === boardSize - 1);
-        if (isCorner) score += 5;
-
-        // ランダム性でゆらぎを加える
-        score += Math.random() * 1.0;
-
-        if (score > bestScore) {
-            bestScore = score;
-            bestMove = move;
-        }
+    // Hard: 1手読み Minimax + 位置評価
+    if (difficulty === 'hard') {
+        return getMinimaxMove(currentBoard, 2, color, config);
     }
-    return bestMove;
+
+    // SuperHard: 深度のある Minimax 探索
+    if (difficulty === 'superhard') {
+        return getMinimaxMove(currentBoard, 3, color, config);
+    }
+
+    // Collusion: 最凶結託モード（深度4）
+    if (difficulty === 'collusion') {
+        const playerColor = players[playerTurnPosition];
+        const depth = 4;
+        const { move } = minimaxCollusion(currentBoard, depth, color, color, playerColor, -Infinity, Infinity, config);
+        return move;
+    }
+
+    return moves[Math.floor(Math.random() * moves.length)];
 };
