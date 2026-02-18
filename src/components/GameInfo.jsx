@@ -1,19 +1,14 @@
 // 蛇突奈 (Jatsuna) - ゲーム情報コンポーネント
-// Last Updated: Mon Feb 17 18:45:00 JST 2026
-// Version: 6.5.0
-import { PLAYERS, PLAYER_NAMES, PLAYER_SHAPES } from '../utils/constants';
+// Last Updated: Wed Feb 18 10:42:00 JST 2026
+// Version: 6.5.1
+import { PLAYERS, PLAYER_NAMES, PLAYER_SHAPES, PLAYER_STONE_STYLES } from '../utils/constants';
 
 const GameInfo = ({
     difficulty, turnCount, scores, currentPlayer, playerTurnPosition,
-    aiThinking, thinkingDots, gameOver, onReset
+    aiThinking, thinkingDots, gameOver, onReset, barrierFreeMode
 }) => {
     const getStoneStyle = (color) => {
-        const styles = {
-            'O': { background: 'linear-gradient(135deg, #ff9f6b 0%, #e67e22 100%)', shapeClass: 'stone-circle' },
-            'C': { background: 'linear-gradient(135deg, #6bb6ff 0%, #22a7e6 100%)', shapeClass: 'stone-diamond' },
-            'P': { background: 'linear-gradient(135deg, #d46bff 0%, #9b22e6 100%)', shapeClass: 'stone-star' }
-        };
-        return styles[color] || {};
+        return barrierFreeMode ? PLAYER_STONE_STYLES.barrierFree[color] : PLAYER_STONE_STYLES.normal[color];
     };
 
     return (

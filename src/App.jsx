@@ -142,7 +142,7 @@ function App() {
 
                         <div className="text-center">
                             <p className="text-slate-600 text-[9px]">
-                                © 2025-2026 OHYAMA, Yoshihisa (o3x) | v7.1.5
+                                © 2025-2026 OHYAMA, Yoshihisa (o3x) & AI Assistants | v7.1.6
                             </p>
                         </div>
                     </div>
@@ -158,6 +158,7 @@ function App() {
                             gameOver={gameOver}
                             onReset={backToMenu}
                             playOrchestraSound={playOrchestraSound}
+                            barrierFreeMode={barrierFreeMode}
                         />
 
                         <Board
