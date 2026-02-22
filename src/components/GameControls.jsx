@@ -11,7 +11,7 @@ const GameControls = ({
                         <span className="w-1 h-3 bg-blue-500 rounded-full"></span> AI Difficulty
                     </label>
                 </div>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-5 gap-2 mb-2">
                     {[
                         { id: 'easy', label: 'EASY', color: 'from-blue-500 to-blue-700' },
                         { id: 'medium', label: 'MED', color: 'from-emerald-500 to-emerald-700' },
@@ -30,6 +30,19 @@ const GameControls = ({
                             {label}
                         </button>
                     ))}
+                </div>
+                <div className="px-1 py-2 bg-slate-800/30 rounded-lg border border-slate-700/30 min-h-[32px] flex items-center justify-center">
+                    <p className="text-[10px] text-slate-400 font-bold text-center animate-fade-in">
+                        {
+                            [
+                                { id: 'easy', desc: '🍵 初心者向け：わざと弱い手を選んで接遇します。' },
+                                { id: 'medium', desc: '🍖 初級者向け：その場で一番取れる手を狙う貪欲な思考。' },
+                                { id: 'hard', desc: '🧠 中級者向け：3手先の展開を見据えた戦略的な布石。' },
+                                { id: 'superhard', desc: '🏆 上級者向け：4手先の読みと位置評価で畳みかけます。' },
+                                { id: 'collusion', desc: '💀 絶望：2体のAIが結託してあなたを狙い撃ちします。' }
+                            ].find(d => d.id === difficulty)?.desc
+                        }
+                    </p>
                 </div>
             </div>
 
